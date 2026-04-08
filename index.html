@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fernanda & Héctor</title>
+    <style>
+        :root {
+            --espacio-profundo: #050510;
+            --nebulosa-rosa: rgba(255, 0, 150, 0.2);
+            --nebulosa-azul: rgba(0, 200, 255, 0.2);
+            --texto-estelar: #ffffff;
+            --acento-neon: #00c8ff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--espacio-profundo);
+            color: var(--texto-estelar);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, var(--nebulosa-rosa), transparent 40%),
+                radial-gradient(circle at 80% 70%, var(--nebulosa-azul), transparent 40%);
+            background-attachment: fixed;
+        }
+
+        #capa-estrellas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+                        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                        radial-gradient(1.5px 1.5px at 90px 40px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 250px 250px;
+        }
+
+        .contenedor {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 30px 15px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 8vw, 2.5rem);
+            font-weight: bold;
+            text-shadow: 0 0 15px var(--acento-neon);
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+
+        .fecha {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            color: var(--acento-neon);
+            margin-bottom: 30px;
+            display: block;
+            letter-spacing: 2px;
+        }
+
+        .reproductor-container {
+            margin-bottom: 30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .reproductor {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            padding: 15px 25px;
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(0, 200, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .nombre-cancion {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        audio {
+            width: 100%;
+            height: 40px;
+            filter: invert(100%) hue-rotate(180deg) brightness(1.5);
+        }
+
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+            gap: 20px;
+            padding: 10px 0;
+        }
+
+        .tarjeta {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--acento-neon);
+            box-shadow: 0 15px 40px rgba(0, 200, 255, 0.15);
+        }
+
+        .media-wrapper {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+            aspect-ratio: 4/5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tarjeta img, .tarjeta video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .btn-audio {
+            margin-top: 15px;
+            background: linear-gradient(135deg, rgba(0, 200, 255, 0.3), rgba(0, 100, 255, 0.3));
+            border: 1px solid var(--acento-neon);
+            color: white;
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-audio:hover {
+            background: var(--acento-neon);
+            color: var(--espacio-profundo);
+            box-shadow: 0 0 15px var(--acento-neon);
+        }
+
+        .frase {
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            margin: 15px 0 5px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+        }
+
+        footer {
+            margin-top: 80px;
+            padding: 30px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .contenedor {
+                padding: 20px 10px;
+            }
+            .tarjeta {
+                padding: 10px;
+            }
+            .frase {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="capa-estrellas"></div>
+
+    <div class="contenedor">
+        <h1>💗 Fernanda & Héctor 💗</h1>
+        <span class="fecha">12 de Octubre de 2025</span>
+
+        <div class="reproductor-container">
+            <div class="reproductor">
+                <span class="nombre-cancion">🎵 Algo Que Se Quede - Grupo Niche</span>
+                <audio controls>
+                    <source src="./Algo Que Se Quede - Grupo Niche.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+        
+        <div class="galeria">
+            <div class="tarjeta">
+                <div class="media-wrapper">
+                    <img src="./27.jpg" alt="Foto 1">
+                </div>
+                <p class="frase">"Si pudiera pedirle a mi Dios una cosa, seria que pudiera estar contigo para siempre..."</p>
+            </div>
+
+            <div class="tarjeta">
+                <div class="media-wrapper">
+                    <img src="./30.jpg" alt="Foto 2">
+                </div>
+                <p class="frase">"Prometo Amarte apasionadamente en todas las formas, Ahora y para Siempre"</p>
+            </div>
+
+            <div class="tarjeta">
+                <div class="media-wrapper">
+                    <video id="video14" loop playsinline>
+                        <source src="./14.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <button class="btn-audio" onclick="toggleAudio('video14')">🔊 Activar Sonido</button>
+                <p class="frase">"Tu eres mi mundo.."</p>
+            </div>
+
+            <div class="tarjeta">
+                <div class="media-wrapper">
+                    <video id="video12" loop playsinline>
+                        <source src="./12.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <button class="btn-audio" onclick="toggleAudio('video12')">🔊 Activar Sonido</button>
+                <p class="frase">"Eres la estrella que guía mi camino..."</p>
+            </div>
+
+            <div class="tarjeta">
+                <div class="media-wrapper">
+                    <video id="video6" loop playsinline>
+                        <source src="./6.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <button class="btn-audio" onclick="toggleAudio('video6')">🔊 Activar Sonido</button>
+                <p class="frase">"Cada día contigo es un regalo..."</p>
+            </div>
+        </div>
+
+        <footer>
+            Hecho con amor para mi Princesita Hermosa 💗
+        </footer>
+    </div>
+
+    <script>
+        // Función para el audio de los videos
+        function toggleAudio(id) {
+            const v = document.getElementById(id);
+            const btn = event.target;
+            if (v.paused) {
+                v.play();
+                btn.innerText = "🔇 Pausar";
+            } else {
+                v.pause();
+                btn.innerText = "🔊 Reproducir";
+            }
+        }
+
+        // Efecto de estrellas al mover el dedo o mouse
+        const estrellas = document.getElementById('capa-estrellas');
+        const mover = (e) => {
+            const x = (e.clientX || e.touches[0].clientX) / window.innerWidth;
+            const y = (e.clientY || e.touches[0].clientY) / window.innerHeight;
+            estrellas.style.transform = `translate(-${x * 20}px, -${y * 20}px)`;
+        };
+        document.addEventListener('mousemove', mover);
+        document.addEventListener('touchmove', mover);
+    </script>
+</body>
+</html>
