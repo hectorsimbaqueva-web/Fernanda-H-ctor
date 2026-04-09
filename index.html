@@ -205,21 +205,23 @@
 
         footer {
             margin-top: 80px;
-            padding: 40px 30px;
-            font-size: 1.1rem;
+            padding: 40px 20px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
             text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px var(--acento-neon), 0 0 42px var(--acento-neon);
             font-weight: 700;
             display: flex;
             justify-content: center;
-            overflow: hidden;
+            align-items: center;
+            text-align: center;
         }
 
         .footer-texto {
             display: inline-block;
             animation: olaNeon 8s ease-in-out infinite;
-            white-space: nowrap;
+            font-size: clamp(1rem, 4vw, 1.4rem);
+            max-width: 90vw;
+            line-height: 1.4;
         }
 
         @keyframes olaNeon {
@@ -248,6 +250,15 @@
 
             .frase {
                 font-size: 0.95rem;
+            }
+
+            footer {
+                padding: 40px 15px;
+                margin-top: 40px;
+            }
+
+            .footer-texto {
+                font-size: 1.1rem;
             }
         }
     </style>
