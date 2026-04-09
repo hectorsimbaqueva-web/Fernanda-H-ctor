@@ -27,100 +27,91 @@
             background-attachment: fixed;
         }
 
-        #capa-estrellas {
+        #canvas-estrellas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-            overflow: hidden;
+            background: #000;
         }
 
         .estrella {
-            position: absolute;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.5;
-            animation: parpadeo var(--duracion) infinite ease-in-out;
-        }
-
-        @keyframes parpadeo {
-
-            0%,
-            100% {
-                opacity: 0.3;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 1;
-                transform: scale(1.2);
-            }
+            /* Eliminado ya que ahora usaremos Canvas */
         }
 
         .contenedor {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 30px 15px;
             text-align: center;
         }
 
         h1 {
-            font-size: clamp(1.8rem, 8vw, 2.5rem);
-            font-weight: bold;
-            text-shadow: 0 0 15px var(--acento-neon);
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: 800;
+            text-shadow: 0 0 20px var(--acento-neon);
             margin-bottom: 5px;
             line-height: 1.2;
+            letter-spacing: -1px;
         }
 
         .fecha {
-            font-size: clamp(1rem, 4vw, 1.2rem);
+            font-size: clamp(1.1rem, 4vw, 1.4rem);
             color: var(--acento-neon);
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             display: block;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
+            font-weight: 300;
+            text-transform: uppercase;
         }
 
         .reproductor-container {
-            margin-bottom: 30px;
             width: 100%;
             display: flex;
             justify-content: center;
         }
 
         .reproductor {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(15px);
-            padding: 15px 25px;
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            border-radius: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            border: 1px solid rgba(0, 200, 255, 0.4);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             width: 100%;
-            max-width: 400px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .reproductor:hover {
+            transform: translateY(-5px);
+            border-color: var(--acento-neon);
         }
 
         .nombre-cancion {
-            font-size: 0.95rem;
-            font-weight: 500;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--acento-neon);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         audio {
             width: 100%;
-            height: 40px;
+            height: 35px;
             filter: invert(100%) hue-rotate(180deg) brightness(1.5);
         }
 
         .musica-galeria {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 50px;
+            gap: 15px;
+            margin-bottom: 60px;
             width: 100%;
         }
 
@@ -138,8 +129,8 @@
 
         .galeria {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+            gap: 25px;
             padding: 10px 0;
         }
 
@@ -238,7 +229,7 @@
 </head>
 
 <body>
-    <div id="capa-estrellas"></div>
+    <canvas id="canvas-estrellas"></canvas>
 
     <div class="contenedor">
         <h1>💗 Fernanda & Héctor 💗</h1>
@@ -247,7 +238,7 @@
         <div class="musica-galeria">
             <div class="reproductor-container">
                 <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Algo Que Se Quede - Niche</span>
+                    <span class="nombre-cancion">🎵 Algo Que Se Quede</span>
                     <audio controls>
                         <source src="./Algo Que Se Quede - Grupo Niche.mp3" type="audio/mpeg">
                     </audio>
@@ -283,7 +274,7 @@
 
             <div class="reproductor-container">
                 <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Yoel & Dla - Estoy Enamorado</span>
+                    <span class="nombre-cancion">🎵 Yoel & Dla - Enamorado</span>
                     <audio controls>
                         <source src="./Yoel & Dla - Estoy Enamorado Yo de Ti.mp3" type="audio/mpeg">
                     </audio>
@@ -307,7 +298,107 @@
                     </audio>
                 </div>
             </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Erick Fornaris - Te Amo</span>
+                    <audio controls>
+                        <source src="./Erick Fornaris - Te Amo.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Cnco - Quisiera</span>
+                    <audio controls>
+                        <source src="./Cnco - Quisiera.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Cnco - Tan Fácil</span>
+                    <audio controls>
+                        <source src="./Cnco - Tan Fácil.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Cnco - Para Enamorarte</span>
+                    <audio controls>
+                        <source src="./Cnco - Para Enamorarte.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Santy G - Amor a Distancia</span>
+                    <audio controls>
+                        <source src="./Santy G - Amor a Distancia.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Pipe Bueno - Si Yo Fuera Ladrón</span>
+                    <audio controls>
+                        <source src="./Pipe Bueno - Si Yo Fuera Ladrón.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Carlos Vives - Volví a Nacer</span>
+                    <audio controls>
+                        <source src="./Carlos Vives - Volví a Nacer.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Alex Campos - Tu Poeta</span>
+                    <audio controls>
+                        <source src="./Alex Campos - Tu Poeta.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Chino y Nacho - El poeta</span>
+                    <audio controls>
+                        <source src="./Chino y Nacho - El poeta.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Galante El Emperador - Un Mundo Contigo</span>
+                    <audio controls>
+                        <source src="./Galante El Emperador - Un Mundo Contigo.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+
+            <div class="reproductor-container">
+                <div class="reproductor">
+                    <span class="nombre-cancion">🎵 Galante El Emperador - Aunque El Mundo Cambie</span>
+                    <audio controls>
+                        <source src="./Galante El Emperador - Aunque El Mundo Cambie.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
         </div>
+
+
 
         <div class="galeria">
             <div class="tarjeta">
@@ -365,31 +456,74 @@
     </div>
 
     <script>
-        // Función para controlar la reproducción exclusiva
+        // --- EFECTO DE VIAJE ESTELAR (WARP SPEED) ---
+        const canvas = document.getElementById('canvas-estrellas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height, stars = [];
+        const numStars = 600;
+        const velocity = 0.8;
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            stars = [];
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * width - width / 2,
+                    y: Math.random() * height - height / 2,
+                    z: Math.random() * width
+                });
+            }
+        }
+
+        function update() {
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < numStars; i++) {
+                let s = stars[i];
+                s.z -= velocity * 5;
+
+                if (s.z <= 0) {
+                    s.z = width;
+                    s.x = Math.random() * width - width / 2;
+                    s.y = Math.random() * height - height / 2;
+                }
+
+                const px = (s.x / s.z) * width + width / 2;
+                const py = (s.y / s.z) * height + height / 2;
+                const size = (1 - s.z / width) * 3;
+
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(255, 255, 255, ${1 - s.z / width})`;
+                ctx.arc(px, py, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            requestAnimationFrame(update);
+        }
+
+        window.addEventListener('resize', initCanvas);
+        initCanvas();
+        update();
+
+        // --- FUNCIONALIDAD AUDIO EXCLUSIVO ---
         function detenerTodo(exceptoElemento) {
-            // Detener todos los videos
-            const todosLosVideos = document.querySelectorAll('video');
-            todosLosVideos.forEach(v => {
+            document.querySelectorAll('video').forEach(v => {
                 if (v !== exceptoElemento) {
                     v.pause();
                     const btn = document.querySelector(`button[onclick="toggleAudio('${v.id}')"]`);
-                    if (btn) btn.innerText = "🔊 Reproducir";
+                    if (btn) btn.innerText = "🔊 Activar Sonido";
                 }
             });
-
-            // Detener todos los audios
-            const todosLosAudios = document.querySelectorAll('audio');
-            todosLosAudios.forEach(a => {
-                if (a !== exceptoElemento) {
-                    a.pause();
-                }
+            document.querySelectorAll('audio').forEach(a => {
+                if (a !== exceptoElemento) a.pause();
             });
         }
 
         function toggleAudio(id) {
             const v = document.getElementById(id);
             const btn = event.target;
-
             if (v.paused) {
                 detenerTodo(v);
                 v.play();
@@ -400,45 +534,9 @@
             }
         }
 
-        // Evento para todos los audios
         document.querySelectorAll('audio').forEach(audio => {
-            audio.addEventListener('play', (e) => {
-                detenerTodo(e.target);
-            });
+            audio.addEventListener('play', (e) => detenerTodo(e.target));
         });
-
-        // Generación de estrellas dinámica
-        const capaEstrellas = document.getElementById('capa-estrellas');
-        const numEstrellas = 150;
-
-        for (let i = 0; i < numEstrellas; i++) {
-            const estrella = document.createElement('div');
-            estrella.className = 'estrella';
-
-            const size = Math.random() * 3;
-            const top = Math.random() * 100;
-            const left = Math.random() * 100;
-            const duracion = 2 + Math.random() * 3;
-            const delay = Math.random() * 5;
-
-            estrella.style.width = `${size}px`;
-            estrella.style.height = `${size}px`;
-            estrella.style.top = `${top}%`;
-            estrella.style.left = `${left}%`;
-            estrella.style.setProperty('--duracion', `${duracion}s`);
-            estrella.style.animationDelay = `${delay}s`;
-
-            capaEstrellas.appendChild(estrella);
-        }
-
-        // Efecto de movimiento sutil
-        const mover = (e) => {
-            const x = (e.clientX || (e.touches && e.touches[0].clientX)) / window.innerWidth;
-            const y = (e.clientY || (e.touches && e.touches[0].clientY)) / window.innerHeight;
-            capaEstrellas.style.transform = `translate(-${x * 10}px, -${y * 10}px)`;
-        };
-        document.addEventListener('mousemove', mover);
-        document.addEventListener('touchmove', mover);
     </script>
 </body>
 
