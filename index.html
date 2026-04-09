@@ -534,8 +534,20 @@
             }
         }
 
-        document.querySelectorAll('audio').forEach(audio => {
+        document.querySelectorAll('audio').forEach((audio, index, audios) => {
             audio.addEventListener('play', (e) => detenerTodo(e.target));
+
+            audio.addEventListener('ended', () => {
+                const nextIndex = index + 1;
+                if (nextIndex < audios.length) {
+                    audios[nextIndex].play();
+                    // Desplazamiento suave hacia la siguiente canción para que el usuario sepa cuál suena
+                    audios[nextIndex].closest('.reproductor').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            });
         });
     </script>
 </body>
