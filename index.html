@@ -14,7 +14,7 @@
             --nebulosa-rosa: rgba(255, 0, 150, 0.2);
             --nebulosa-azul: rgba(0, 200, 255, 0.2);
             --texto-estelar: #ffffff;
-            --acento-neon: #00c8ff;
+            --acento-neon: #ff0096;
         }
 
         body {
@@ -96,7 +96,7 @@
         .reproductor:hover {
             transform: translateY(-5px);
             border-color: var(--acento-neon);
-            box-shadow: 0 10px 40px rgba(0, 200, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(255, 0, 150, 0.2);
         }
 
         .visualizador-audio {
@@ -167,7 +167,7 @@
             transform: translateY(-10px) scale(1.02);
             background: rgba(255, 255, 255, 0.08);
             border-color: var(--acento-neon);
-            box-shadow: 0 15px 40px rgba(0, 200, 255, 0.15);
+            box-shadow: 0 15px 40px rgba(255, 0, 150, 0.15);
         }
 
         .media-wrapper {
@@ -192,7 +192,7 @@
 
         .btn-audio {
             margin-top: 15px;
-            background: linear-gradient(135deg, rgba(0, 200, 255, 0.3), rgba(0, 100, 255, 0.3));
+            background: linear-gradient(135deg, rgba(255, 0, 150, 0.3), rgba(200, 0, 100, 0.3));
             border: 1px solid var(--acento-neon);
             color: white;
             border-radius: 50px;
@@ -365,12 +365,12 @@
 
         .acrostico-linea .letra {
             font-family: 'Bubblegum Sans', cursive;
-            color: #00ffff;
+            color: #ff00ff;
             font-size: clamp(2rem, 8vw, 3.5rem);
             font-weight: 900;
             margin-right: 20px;
             line-height: 0.8;
-            text-shadow: 0 0 15px rgba(0, 255, 255, 0.9), 1px 1px 0px #fff;
+            text-shadow: 0 0 15px rgba(255, 0, 255, 0.9), 1px 1px 0px #fff;
             display: inline-block;
             min-width: 45px;
             text-align: center;
@@ -1138,8 +1138,8 @@
                     }
 
                     ctxV.shadowBlur = 12;
-                    ctxV.shadowColor = '#00c8ff';
-                    ctxV.fillStyle = '#00c8ff';
+                    ctxV.shadowColor = '#ff0096';
+                    ctxV.fillStyle = '#ff0096';
 
                     ctxV.fillRect(x, height - barHeight, barWidth - 2, barHeight);
                     x += barWidth;
