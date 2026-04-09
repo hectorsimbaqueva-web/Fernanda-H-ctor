@@ -88,12 +88,23 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             width: 100%;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .reproductor:hover {
             transform: translateY(-5px);
             border-color: var(--acento-neon);
+            box-shadow: 0 10px 40px rgba(0, 200, 255, 0.2);
+        }
+
+        .visualizador-audio {
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+            margin: 5px 0;
+            display: block;
         }
 
         .nombre-cancion {
@@ -102,12 +113,15 @@
             color: var(--acento-neon);
             text-transform: uppercase;
             letter-spacing: 1px;
+            z-index: 1;
+            text-shadow: 0 0 10px var(--acento-neon);
         }
 
         audio {
             width: 100%;
             height: 35px;
             filter: invert(100%) hue-rotate(180deg) brightness(1.5);
+            z-index: 1;
         }
 
         .musica-galeria {
@@ -1034,14 +1048,125 @@
             }
         }
 
+        // --- LÓGICA DEL VISUALIZADOR DE AUDIO ---
+        let audioContext;
+        const analizadores = new Map();
+
+        function resumeAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
+        // Capturar clics para activar el audio context (requerido por navegadores)
+        window.addEventListener('click', resumeAudioContext);
+        window.addEventListener('touchstart', resumeAudioContext);
+
+        function iniciarVisualizador(audio) {
+            resumeAudioContext();
+            if (!audioContext) return;
+
+            let analizer;
+            if (!analizadores.has(audio)) {
+                try {
+                    analizer = audioContext.createAnalyser();
+                    const source = audioContext.createMediaElementSource(audio);
+                    source.connect(analizer);
+                    analizer.connect(audioContext.destination);
+                    analizer.fftSize = 128;
+                    analizadores.set(audio, analizer);
+                } catch (e) {
+                    console.warn("Visualizador: Error al conectar fuente (CORS o ya conectado).", e);
+                    analizer = null;
+                }
+            } else {
+                analizer = analizadores.get(audio);
+            }
+
+            const reproductor = audio.closest('.reproductor');
+            const canvas = reproductor.querySelector('.visualizador-audio');
+            if (!canvas) return;
+
+            const ctxV = canvas.getContext('2d');
+            const bufferLength = analizer ? analizer.frequencyBinCount : 32;
+            const dataArray = new Uint8Array(bufferLength);
+
+            function animar() {
+                if (audio.paused || audio.ended) {
+                    ctxV.clearRect(0, 0, canvas.width, canvas.height);
+                    return;
+                }
+
+                requestAnimationFrame(animar);
+
+                if (analizer) {
+                    analizer.getByteFrequencyData(dataArray);
+                }
+
+                if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+                    canvas.width = canvas.clientWidth || 300;
+                    canvas.height = canvas.clientHeight || 40;
+                }
+
+                ctxV.clearRect(0, 0, canvas.width, canvas.height);
+
+                const width = canvas.width;
+                const height = canvas.height;
+                const barWidth = (width / bufferLength) * 2.2;
+                let x = 0;
+
+                // Verificar si hay datos reales
+                let hasRealData = false;
+                if (analizer) {
+                    for (let i = 0; i < bufferLength; i++) {
+                        if (dataArray[i] > 0) { hasRealData = true; break; }
+                    }
+                }
+
+                for (let i = 0; i < bufferLength; i++) {
+                    let barHeight;
+
+                    if (hasRealData) {
+                        barHeight = (dataArray[i] / 255) * height;
+                    } else {
+                        // MODO FALLBACK: Simulación si el navegador bloquea los datos del archivo local
+                        const time = Date.now() / 150;
+                        barHeight = (Math.sin(time + i * 0.3) + 1) * (height / 2.5) * (0.5 + Math.random() * 0.5);
+                    }
+
+                    ctxV.shadowBlur = 12;
+                    ctxV.shadowColor = '#00c8ff';
+                    ctxV.fillStyle = '#00c8ff';
+
+                    ctxV.fillRect(x, height - barHeight, barWidth - 2, barHeight);
+                    x += barWidth;
+                }
+            }
+
+            animar();
+        }
+
         document.querySelectorAll('audio').forEach((audio, index, audios) => {
-            audio.addEventListener('play', (e) => detenerTodo(e.target));
+            // Inyectar canvas si no existe
+            const reproductor = audio.closest('.reproductor');
+            if (reproductor && !reproductor.querySelector('.visualizador-audio')) {
+                const canvas = document.createElement('canvas');
+                canvas.className = 'visualizador-audio';
+                reproductor.insertBefore(canvas, audio);
+            }
+
+            audio.addEventListener('play', (e) => {
+                detenerTodo(e.target);
+                iniciarVisualizador(e.target);
+            });
 
             audio.addEventListener('ended', () => {
                 const nextIndex = index + 1;
                 if (nextIndex < audios.length) {
                     audios[nextIndex].play();
-                    // Desplazamiento suave hacia la siguiente canción para que el usuario sepa cuál suena
                     audios[nextIndex].closest('.reproductor').scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
