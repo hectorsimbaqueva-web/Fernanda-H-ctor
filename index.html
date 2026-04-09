@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fernanda & Héctor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;700&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --espacio-profundo: #050510;
@@ -261,7 +263,143 @@
                 font-size: 1.1rem;
             }
         }
+        .acrostico-live {
+            background: linear-gradient(135deg, #4a0082, #7b1fa2, #4a0082);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            padding: 60px 20px;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            margin: 40px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .acrostico-live::before {
+            content: '💗';
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.1;
+            top: -20px;
+            right: -20px;
+            transform: rotate(20deg);
+        }
+
+        .acrostico-live::after {
+            content: '💖';
+            position: absolute;
+            font-size: 80px;
+            opacity: 0.1;
+            bottom: -20px;
+            left: -20px;
+            transform: rotate(-20deg);
+        }
+
+        .acrostico-titulo {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: clamp(2.5rem, 12vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 50px;
+            letter-spacing: 12px;
+            position: relative;
+            z-index: 2;
+            animation: arcoiris 8s infinite alternate;
+        }
+
+        .acrostico-texto {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            text-align: left;
+            max-width: 850px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .acrostico-linea {
+            font-size: clamp(0.95rem, 4vw, 1.35rem);
+            line-height: 1.5;
+            color: #fff;
+            display: flex;
+            align-items: flex-start;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .acrostico-linea .letra {
+            font-family: 'Bubblegum Sans', cursive;
+            color: #00ffff;
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: 900;
+            margin-right: 20px;
+            line-height: 0.8;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.9), 1px 1px 0px #fff;
+            display: inline-block;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .acrostico-footer {
+            font-family: 'Bubblegum Sans', cursive;
+            margin-top: 60px;
+            font-size: clamp(1.4rem, 6vw, 2.5rem);
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+            animation: arcoiris 8s infinite alternate-reverse;
+        }
+
+        @keyframes arcoiris {
+            0% { 
+                color: #ff00ff; 
+                text-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 2px 2px 0px #fff;
+            }
+            25% { 
+                color: #00ffff; 
+                text-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 2px 2px 0px #fff;
+            }
+            50% { 
+                color: #ff1493; 
+                text-shadow: 0 0 20px rgba(255, 20, 147, 0.8), 2px 2px 0px #fff;
+            }
+            75% { 
+                color: #7b1fa2; 
+                text-shadow: 0 0 20px rgba(123, 31, 162, 0.8), 2px 2px 0px #fff;
+            }
+            100% { 
+                color: #00ff7f; 
+                text-shadow: 0 0 20px rgba(0, 255, 127, 0.8), 2px 2px 0px #fff;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .acrostico-live {
+                padding: 40px 15px;
+                border-radius: 20px;
+            }
+            .acrostico-linea .letra {
+                min-width: 35px;
+                margin-right: 12px;
+            }
+            .acrostico-titulo {
+                letter-spacing: 5px;
+            }
+        }
     </style>
+
 </head>
 
 <body>
@@ -563,6 +701,26 @@
                 <button class="btn-audio" onclick="toggleAudio('video6')">🔊 Activar Sonido</button>
                 <p class="frase">"Cada día contigo es un regalo que valoro con todo mi corazón, porque a tu lado he
                     aprendido lo que significa amar de verdad.❤️"</p>
+            </div>
+
+        </div>
+
+        <div class="acrostico-live">
+            <h2 class="acrostico-titulo">F E R N A N D A 💖</h2>
+            
+            <div class="acrostico-texto">
+                <div class="acrostico-linea"><span class="letra">F</span>eliz me haces desde que llegaste a mi vida, llenando mi corazón de amor y alegría 💕</div>
+                <div class="acrostico-linea"><span class="letra">E</span>res esa persona especial que ilumina mis días incluso en los momentos difíciles ✨</div>
+                <div class="acrostico-linea"><span class="letra">R</span>obaste mi corazón sin darme cuenta y ahora no quiero que nunca te vayas 💘</div>
+                <div class="acrostico-linea"><span class="letra">N</span>o hay un solo día en el que no agradezca por tenerte a mi lado 🥰</div>
+                <div class="acrostico-linea"><span class="letra">A</span>marte se ha convertido en lo más bonito que me ha pasado 💖</div>
+                <div class="acrostico-linea"><span class="letra">N</span>uestros momentos juntos son los recuerdos más hermosos que guardo en mi corazón 🌹</div>
+                <div class="acrostico-linea"><span class="letra">D</span>eseo seguir caminando contigo, construyendo sueños y cumpliendo metas juntos 🤍</div>
+                <div class="acrostico-linea"><span class="letra">A</span> tu lado encontré amor verdadero, paz y felicidad💞</div>
+            </div>
+
+            <div class="acrostico-footer">
+                Te Quiero mucho mi princesita hermosa ❤️
             </div>
         </div>
 
