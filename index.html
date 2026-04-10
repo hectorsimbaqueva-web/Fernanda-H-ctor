@@ -1328,9 +1328,13 @@
                     // Aplicar efecto visual
                     setTimeout(() => {
                         reproductor.classList.add('resaltado');
-                    }, 500);
 
-                    // Opcional: Reproducir si el usuario lo desea, pero por ahora solo seleccionamos
+                        // Reproducir automáticamente la canción encontrada
+                        const audio = reproductor.querySelector('audio');
+                        if (audio) {
+                            audio.play().catch(e => console.log("Reproducción automática bloqueada por el navegador:", e));
+                        }
+                    }, 500);
                 }
             });
 
