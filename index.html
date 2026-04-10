@@ -897,7 +897,8 @@
                 <div class="media-wrapper">
                     <img src="./30.jpg" alt="Foto 2">
                 </div>
-                <p class="frase">"Prometo amarte en cada momento y de todas las maneras, porque tú mereces lo más hermoso.❤️✨"</p>
+                <p class="frase">"Prometo amarte en cada momento y de todas las maneras, porque tú mereces lo más
+                    hermoso.❤️✨"</p>
             </div>
 
             <div class="tarjeta">
@@ -906,8 +907,9 @@
                         <source src="./14.mp4" type="video/mp4">
                     </video>
                 </div>
-                <button class="btn-audio" onclick="toggleAudio('video14')">🔊 Activar Sonido</button>
-                <p class="frase">"No he sido el hombre perfecto, pero sí el que te quiere y siempre estará contigo, pase lo que pase.❤️‍🩹✨"</p>
+                <button class="btn-audio" onclick="toggleAudio('video14', event)">🔊 Activar Sonido</button>
+                <p class="frase">"No he sido el hombre perfecto, pero sí el que te quiere y siempre estará contigo, pase
+                    lo que pase.❤️‍🩹✨"</p>
             </div>
 
             <div class="tarjeta">
@@ -916,8 +918,9 @@
                         <source src="./12.mp4" type="video/mp4">
                     </video>
                 </div>
-                <button class="btn-audio" onclick="toggleAudio('video12')">🔊 Activar Sonido</button>
-                <p class="frase">"Eres la mejor mujer que ha llegado a mi vida y el regalo más hermoso que he recibido.💖✨"
+                <button class="btn-audio" onclick="toggleAudio('video12', event)">🔊 Activar Sonido</button>
+                <p class="frase">"Eres la mejor mujer que ha llegado a mi vida y el regalo más hermoso que he
+                    recibido.💖✨"
                 </p>
             </div>
 
@@ -927,8 +930,9 @@
                         <source src="./6.mp4" type="video/mp4">
                     </video>
                 </div>
-                <button class="btn-audio" onclick="toggleAudio('video6')">🔊 Activar Sonido</button>
-                <p class="frase">"Cada día contigo es un regalo que guardo en mi corazón, porque a tu lado aprendí lo que significa amar de verdad.❤️"</p>
+                <button class="btn-audio" onclick="toggleAudio('video6', event)">🔊 Activar Sonido</button>
+                <p class="frase">"Cada día contigo es un regalo que guardo en mi corazón, porque a tu lado aprendí lo
+                    que significa amar de verdad.❤️"</p>
             </div>
 
         </div>
@@ -961,7 +965,8 @@
         </div>
 
         <footer>
-            <span class="footer-texto"><span class="corazon-palpitante">💗</span>HECHO CON TODO MI AMOR PARA TI, MI PRINCESITA HERMOSA. TE QUIERO MUCHO.<span class="corazon-palpitante">💗</span></span>
+            <span class="footer-texto"><span class="corazon-palpitante">💗</span>HECHO CON TODO MI AMOR PARA TI, MI
+                PRINCESITA HERMOSA. TE QUIERO MUCHO.<span class="corazon-palpitante">💗</span></span>
         </footer>
     </div>
 
@@ -1031,22 +1036,23 @@
             });
         }
 
-        function toggleAudio(id) {
+        function toggleAudio(id, event) {
             const v = document.getElementById(id);
-            const btn = event.target;
+            const btn = event ? event.currentTarget : document.querySelector(`button[onclick*="${id}"]`);
             if (v.paused) {
                 detenerTodo(v);
-                v.play();
-                btn.innerText = "🔇 Pausar";
+                v.play().catch(e => console.log("Play blocked by browser:", e));
+                if (btn) btn.innerText = "🔇 Pausar";
             } else {
                 v.pause();
-                btn.innerText = "🔊 Reproducir";
+                if (btn) btn.innerText = "🔊 Reproducir";
             }
         }
 
         // --- LÓGICA DEL VISUALIZADOR DE AUDIO ---
         let audioContext;
         const analizadores = new Map();
+        const loopsAnimacion = new Map();
 
         function resumeAudioContext() {
             if (!audioContext) {
@@ -1057,13 +1063,15 @@
             }
         }
 
-        // Capturar clics para activar el audio context (requerido por navegadores)
         window.addEventListener('click', resumeAudioContext);
         window.addEventListener('touchstart', resumeAudioContext);
 
         function iniciarVisualizador(audio) {
             resumeAudioContext();
             if (!audioContext) return;
+
+            // Asegurar que el audio tenga crossOrigin para evitar CORS si se sube a un server
+            if (!audio.crossOrigin) audio.crossOrigin = "anonymous";
 
             let analizer;
             if (!analizadores.has(audio)) {
@@ -1075,7 +1083,7 @@
                     analizer.fftSize = 128;
                     analizadores.set(audio, analizer);
                 } catch (e) {
-                    console.warn("Visualizador: Error al conectar fuente (CORS o ya conectado).", e);
+                    console.warn("Visualizador: Usando modo fallback (CORS o ya conectado).");
                     analizer = null;
                 }
             } else {
@@ -1083,8 +1091,13 @@
             }
 
             const reproductor = audio.closest('.reproductor');
-            const canvas = reproductor.querySelector('.visualizador-audio');
+            const canvas = reproductor ? reproductor.querySelector('.visualizador-audio') : null;
             if (!canvas) return;
+
+            // Evitar múltiples bucles para el mismo audio
+            if (loopsAnimacion.get(audio)) {
+                cancelAnimationFrame(loopsAnimacion.get(audio));
+            }
 
             const ctxV = canvas.getContext('2d');
             const bufferLength = analizer ? analizer.frequencyBinCount : 32;
@@ -1093,10 +1106,12 @@
             function animar() {
                 if (audio.paused || audio.ended) {
                     ctxV.clearRect(0, 0, canvas.width, canvas.height);
+                    loopsAnimacion.set(audio, null);
                     return;
                 }
 
-                requestAnimationFrame(animar);
+                const loopId = requestAnimationFrame(animar);
+                loopsAnimacion.set(audio, loopId);
 
                 if (analizer) {
                     analizer.getByteFrequencyData(dataArray);
@@ -1111,33 +1126,38 @@
 
                 const width = canvas.width;
                 const height = canvas.height;
-                const barWidth = (width / bufferLength) * 2.2;
+                const barWidth = (width / bufferLength) * 2.5;
                 let x = 0;
 
-                // Verificar si hay datos reales
                 let hasRealData = false;
                 if (analizer) {
                     for (let i = 0; i < bufferLength; i++) {
-                        if (dataArray[i] > 0) { hasRealData = true; break; }
+                        if (dataArray[i] > 1) { hasRealData = true; break; }
                     }
                 }
 
                 for (let i = 0; i < bufferLength; i++) {
                     let barHeight;
-
                     if (hasRealData) {
                         barHeight = (dataArray[i] / 255) * height;
                     } else {
-                        // MODO FALLBACK: Simulación si el navegador bloquea los datos del archivo local
-                        const time = Date.now() / 150;
-                        barHeight = (Math.sin(time + i * 0.3) + 1) * (height / 2.5) * (0.5 + Math.random() * 0.5);
+                        const time = Date.now() / 200;
+                        barHeight = (Math.sin(time + i * 0.4) + 1) * (height / 2.5) * (0.8 + Math.random() * 0.4);
                     }
 
-                    ctxV.shadowBlur = 12;
-                    ctxV.shadowColor = '#ff00ff';
-                    ctxV.fillStyle = '#ff00ff';
+                    // Gradiente neon para las barras
+                    const gradient = ctxV.createLinearGradient(0, height, 0, height - barHeight);
+                    gradient.addColorStop(0, 'rgba(255, 0, 255, 0.2)');
+                    gradient.addColorStop(1, '#ff00ff');
 
-                    ctxV.fillRect(x, height - barHeight, barWidth - 2, barHeight);
+                    ctxV.shadowBlur = 8;
+                    ctxV.shadowColor = '#ff00ff';
+                    ctxV.fillStyle = gradient;
+
+                    // Dibujar barra redondeada
+                    const r = 2;
+                    const bh = Math.max(barHeight, 2);
+                    ctxV.fillRect(x, height - bh, barWidth - 4, bh);
                     x += barWidth;
                 }
             }
