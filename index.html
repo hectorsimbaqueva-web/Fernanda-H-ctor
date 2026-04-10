@@ -32,23 +32,9 @@
             background-position: center;
         }
 
+        /* Fondo Estelar Desactivado para favorecer el fondo Hello Kitty */
         #canvas-estrellas {
             display: none;
-            /* Ocultamos el fondo de estrellas espacial */
-        }
-
-        #canvas-estrellas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: #000;
-        }
-
-        .estrella {
-            /* Eliminado ya que ahora usaremos Canvas */
         }
 
         .contenedor {
@@ -60,21 +46,26 @@
 
         h1 {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: clamp(2.5rem, 10vw, 4rem);
+            font-size: clamp(1.8rem, 8vw, 3.5rem);
             font-weight: 800;
             color: #ffffff;
             text-shadow: 0 0 10px var(--acento-neon-azul), 0 0 20px var(--acento-neon-azul), 0 0 30px var(--acento-neon-azul);
             margin-bottom: 5px;
             line-height: 1.2;
             letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
         }
 
         .fecha {
-            font-size: clamp(1.1rem, 4vw, 1.4rem);
+            font-size: clamp(1rem, 4vw, 1.4rem);
             color: var(--acento-neon-azul);
             margin-bottom: 40px;
             display: block;
-            letter-spacing: 4px;
+            letter-spacing: 2px;
             font-weight: 400;
             text-transform: uppercase;
         }
@@ -181,7 +172,9 @@
         .reproductor,
         .tarjeta,
         .buscador-btn,
-        .btn-audio {
+        .btn-audio,
+        .corazon-palpitante,
+        .reproductor::after {
             will-change: transform;
         }
 
@@ -324,9 +317,10 @@
         }
 
         .acrostico-live {
-            background: linear-gradient(135deg, var(--kitty-pink), #ff7eb3, var(--kitty-pink));
+            background: #000000;
             background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
+            animation: none;
+            /* Quitamos la animación de gradiente rosa */
             padding: 60px 20px;
             border-radius: 30px;
             position: relative;
@@ -339,6 +333,45 @@
             text-align: center;
             width: 100%;
             max-width: 1000px;
+        }
+
+        .kitty-heart-bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.35;
+            z-index: 1;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 30px;
+        }
+
+        .kitty-heart-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7) contrast(1.1);
+        }
+
+        .heart-text {
+            position: absolute;
+            top: 58%;
+            /* Centrado perfecto vertical ajustado al corazón */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: clamp(3.5rem, 15vw, 7rem);
+            color: #ffffff;
+            text-shadow: 0 0 10px #fff, 0 0 30px #ff0055, 0 0 60px #ff0055;
+            font-weight: 900;
+            z-index: 2;
+            letter-spacing: 5px;
+            opacity: 0.9;
         }
 
         @keyframes gradientBG {
@@ -377,13 +410,19 @@
 
         .acrostico-titulo {
             font-family: 'Bubblegum Sans', cursive;
-            font-size: clamp(2.5rem, 12vw, 5rem);
+            font-size: clamp(1.8rem, 10vw, 4rem);
             font-weight: 900;
             margin-bottom: 50px;
-            letter-spacing: 12px;
+            letter-spacing: clamp(4px, 1.5vw, 10px);
             position: relative;
             z-index: 2;
-            animation: arcoiris 8s infinite alternate;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            width: 100%;
+            animation: bucleColores 4s infinite alternate ease-in-out;
         }
 
         .acrostico-texto {
@@ -409,25 +448,26 @@
 
         .acrostico-linea .letra {
             font-family: 'Bubblegum Sans', cursive;
-            color: #00ffff;
+            color: #ffffff;
             font-size: clamp(2rem, 8vw, 3.5rem);
             font-weight: 900;
             margin-right: 20px;
             line-height: 0.8;
-            text-shadow: 0 0 15px rgba(0, 255, 255, 0.9), 1px 1px 0px #fff;
             display: inline-block;
             min-width: 45px;
             text-align: center;
+            animation: bucleColores 4s infinite alternate ease-in-out;
         }
 
         .acrostico-footer {
-            font-family: 'Bubblegum Sans', cursive;
-            margin-top: 60px;
-            font-size: clamp(1.4rem, 6vw, 2.5rem);
+            font-size: clamp(1.1rem, 5vw, 1.8rem);
+            margin-top: 50px;
             font-weight: 700;
+            color: #ffffff;
             position: relative;
             z-index: 2;
-            animation: arcoiris 8s infinite alternate-reverse;
+            animation: bucleColores 3s infinite alternate ease-in-out;
+            text-shadow: 0 0 10px var(--acento-neon);
         }
 
         @keyframes arcoiris {
@@ -500,6 +540,28 @@
 
             70% {
                 transform: scale(1);
+            }
+        }
+
+        @keyframes bucleColores {
+            0% {
+                color: #ffffff;
+                text-shadow: 0 0 10px #ff1a75, 0 0 20px #ff1a75, 0 0 30px #ff1a75;
+            }
+
+            33% {
+                color: #ffffff;
+                text-shadow: 0 0 12px #00c8ff, 0 0 25px #00c8ff, 0 0 45px #00c8ff;
+            }
+
+            66% {
+                color: #fff0f5;
+                text-shadow: 0 0 15px #ff1a75, 0 0 40px #ff1a75, 0 0 60px #ff1a75;
+            }
+
+            100% {
+                color: #ffffff;
+                text-shadow: 0 0 15px #00c8ff, 0 0 35px #00c8ff, 0 0 55px #00c8ff;
             }
         }
 
@@ -1510,6 +1572,10 @@
         </div>
 
         <div class="acrostico-live">
+            <div class="kitty-heart-bg-container">
+                <img src="hello_kitty_heart_base.jpg" class="kitty-heart-img">
+                <div class="heart-text">F & H</div>
+            </div>
             <h2 class="acrostico-titulo">F E R N A N D A <span class="corazon-palpitante">💖</span></h2>
 
             <div class="acrostico-texto">
@@ -1551,48 +1617,10 @@
         const numStars = 600;
         const velocity = 0.8;
 
-        function initCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            stars = [];
-            for (let i = 0; i < numStars; i++) {
-                stars.push({
-                    x: Math.random() * width - width / 2,
-                    y: Math.random() * height - height / 2,
-                    z: Math.random() * width
-                });
-            }
-        }
-
-        function update() {
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0, 0, width, height);
-
-            for (let i = 0; i < numStars; i++) {
-                let s = stars[i];
-                s.z -= velocity * 5;
-
-                if (s.z <= 0) {
-                    s.z = width;
-                    s.x = Math.random() * width - width / 2;
-                    s.y = Math.random() * height - height / 2;
-                }
-
-                const px = (s.x / s.z) * width + width / 2;
-                const py = (s.y / s.z) * height + height / 2;
-                const size = (1 - s.z / width) * 3;
-
-                ctx.beginPath();
-                ctx.fillStyle = `rgba(255, 255, 255, ${1 - s.z / width})`;
-                ctx.arc(px, py, size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            requestAnimationFrame(update);
-        }
-
-        window.addEventListener('resize', initCanvas);
-        initCanvas();
-        update();
+        // --- FONDO ESTELAR (DESACTIVADO PARA RENDIMIENTO) ---
+        // Se mantiene desactivado para priorizar el fondo Hello Kitty y mejorar la fluidez.
+        function initCanvas() { }
+        function update() { }
 
         // --- FUNCIONALIDAD AUDIO EXCLUSIVO ---
         function detenerTodo(exceptoElemento) {
@@ -1647,8 +1675,6 @@
             resumeAudioContext();
             if (!audioContext) return;
 
-            if (!audio.crossOrigin) audio.crossOrigin = "anonymous";
-
             let analizer;
             if (!analizadores.has(audio)) {
                 try {
@@ -1656,7 +1682,7 @@
                     const source = audioContext.createMediaElementSource(audio);
                     source.connect(analizer);
                     analizer.connect(audioContext.destination);
-                    analizer.fftSize = 128;
+                    analizer.fftSize = 64; // Reducido para mayor fluidez
                     analizadores.set(audio, analizer);
                 } catch (e) {
                     analizer = null;
@@ -1677,9 +1703,13 @@
             const bufferLength = analizer ? analizer.frequencyBinCount : 32;
             const dataArray = new Uint8Array(bufferLength);
 
+            // Cache de dimensiones para no recalcular en cada frame
+            let width = canvasV.width = canvasV.clientWidth;
+            let height = canvasV.height = canvasV.clientHeight;
+
             function animar() {
                 if (audio.paused || audio.ended) {
-                    ctxV.clearRect(0, 0, canvasV.width, canvasV.height);
+                    ctxV.clearRect(0, 0, width, height);
                     loopsAnimacion.set(audio, null);
                     return;
                 }
@@ -1687,26 +1717,23 @@
                 loopsAnimacion.set(audio, requestAnimationFrame(animar));
                 if (analizer) analizer.getByteFrequencyData(dataArray);
 
-                const width = canvasV.width = canvasV.clientWidth;
-                const height = canvasV.height = canvasV.clientHeight;
-
                 ctxV.clearRect(0, 0, width, height);
-                ctxV.shadowBlur = 8;
-                ctxV.shadowColor = '#ff1a75';
+                ctxV.shadowBlur = 12;
+                ctxV.shadowColor = '#00c8ff';
 
-                const barWidth = (width / bufferLength) * 2.5;
+                const barWidth = (width / bufferLength) * 2;
                 let x = 0;
 
                 for (let i = 0; i < bufferLength; i++) {
-                    const val = analizer ? dataArray[i] : (Math.sin(Date.now() / 200 + i * 0.4) + 1) * 100;
+                    const val = analizer ? dataArray[i] : (Math.sin(Date.now() / 200 + i * 0.4) + 1) * 80;
                     const barHeight = (val / 255) * height;
 
                     const gradient = ctxV.createLinearGradient(0, height, 0, height - barHeight);
-                    gradient.addColorStop(0, 'rgba(255, 26, 117, 0.2)');
-                    gradient.addColorStop(1, '#ff1a75');
+                    gradient.addColorStop(0, 'rgba(0, 200, 255, 0.1)');
+                    gradient.addColorStop(1, '#00c8ff');
 
                     ctxV.fillStyle = gradient;
-                    ctxV.fillRect(x, height - Math.max(barHeight, 2), barWidth - 4, Math.max(barHeight, 2));
+                    ctxV.fillRect(x, height - Math.max(barHeight, 3), barWidth - 4, Math.max(barHeight, 3));
                     x += barWidth;
                 }
             }
