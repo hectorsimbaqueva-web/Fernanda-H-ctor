@@ -9,6 +9,17 @@
         rel="stylesheet">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
         :root {
             --kitty-pink-soft: #feeaf1;
             --kitty-pink: #ff4d94;
@@ -42,11 +53,18 @@
             margin: 0 auto;
             padding: 30px 15px;
             text-align: center;
+            width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .contenedor {
+                padding: 20px 10px;
+            }
         }
 
         h1 {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: clamp(1.8rem, 8vw, 3.5rem);
+            font-size: clamp(1.5rem, 7vw, 3.5rem);
             font-weight: 800;
             color: #ffffff;
             text-shadow: 0 0 10px var(--acento-neon-azul), 0 0 20px var(--acento-neon-azul), 0 0 30px var(--acento-neon-azul);
@@ -56,17 +74,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
             width: 100%;
+            word-break: break-word;
         }
 
         .fecha {
             font-size: clamp(1rem, 4vw, 1.4rem);
-            color: var(--acento-neon-azul);
+            color: #000000;
             margin-bottom: 40px;
             display: block;
             letter-spacing: 2px;
-            font-weight: 400;
+            font-weight: 700;
             text-transform: uppercase;
         }
 
@@ -110,6 +130,16 @@
             border: 3px solid var(--acento-neon-azul);
             filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
             transition: transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        @media (max-width: 600px) {
+            .reproductor::after {
+                right: 0px;
+                bottom: -5px;
+                width: 50px;
+                height: 50px;
+            }
         }
 
         .reproductor:hover {
@@ -138,6 +168,10 @@
             letter-spacing: 1px;
             z-index: 1;
             text-shadow: 0 0 10px var(--acento-neon-azul);
+            display: block;
+            width: 100%;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         audio {
@@ -165,6 +199,7 @@
         @media (max-width: 600px) {
             .musica-galeria {
                 grid-template-columns: 1fr;
+                gap: 12px;
             }
         }
 
@@ -223,6 +258,7 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            max-width: 100%;
         }
 
         .btn-audio {
@@ -410,19 +446,20 @@
 
         .acrostico-titulo {
             font-family: 'Bubblegum Sans', cursive;
-            font-size: clamp(1.8rem, 10vw, 4rem);
+            font-size: clamp(1.5rem, 8vw, 4rem);
             font-weight: 900;
             margin-bottom: 50px;
-            letter-spacing: clamp(4px, 1.5vw, 10px);
+            letter-spacing: clamp(2px, 1vw, 10px);
             position: relative;
             z-index: 2;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
             width: 100%;
             animation: bucleColores 4s infinite alternate ease-in-out;
+            word-break: break-word;
         }
 
         .acrostico-texto {
@@ -499,17 +536,23 @@
 
         @media (max-width: 600px) {
             .acrostico-live {
-                padding: 40px 15px;
+                padding: 40px 10px;
                 border-radius: 20px;
+                overflow: hidden;
             }
 
             .acrostico-linea .letra {
-                min-width: 35px;
-                margin-right: 12px;
+                min-width: 30px;
+                margin-right: 10px;
             }
 
             .acrostico-titulo {
-                letter-spacing: 5px;
+                letter-spacing: 2px;
+                font-size: 1.8rem;
+            }
+
+            .heart-text {
+                font-size: 3rem;
             }
         }
 
