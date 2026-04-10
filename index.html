@@ -621,6 +621,61 @@
                 padding: 15px;
             }
         }
+
+        /* --- SUGERENCIAS DE BÚSQUEDA --- */
+        .sugerencias-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 10, 25, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--acento-neon);
+            border-radius: 15px;
+            margin-top: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 200, 255, 0.2);
+        }
+
+        .sugerencia-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .sugerencia-item:last-child {
+            border-bottom: none;
+        }
+
+        .sugerencia-item:hover {
+            background: rgba(0, 200, 255, 0.15);
+            color: var(--acento-neon);
+            padding-left: 25px;
+        }
+
+        .sugerencia-item i {
+            color: var(--acento-neon);
+            font-size: 0.8rem;
+        }
+
+        /* Scrollbar personalizado para las sugerencias */
+        .sugerencias-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sugerencias-container::-webkit-scrollbar-thumb {
+            background: var(--acento-neon);
+            border-radius: 3px;
+        }
     </style>
 
 </head>
@@ -636,6 +691,7 @@
             <input type="text" id="input-busqueda" class="buscador-input"
                 placeholder="¿Qué canción quiere escuchar mi princesa?" autocomplete="off">
             <button id="btn-buscar" class="buscador-btn">🔍 Buscar</button>
+            <div id="lista-sugerencias" class="sugerencias-container"></div>
         </div>
 
         <div class="musica-galeria">
@@ -1659,7 +1715,59 @@
 
         btnBuscar.addEventListener('click', realizarBusqueda);
         inputBusqueda.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') realizarBusqueda();
+            if (e.key === 'Enter') {
+                realizarBusqueda();
+                listaSugerencias.style.display = 'none';
+            }
+        });
+
+        // --- NUEVA LÓGICA DE SUGERENCIAS ---
+        const listaSugerencias = document.getElementById('lista-sugerencias');
+
+        inputBusqueda.addEventListener('input', () => {
+            const termino = inputBusqueda.value.toLowerCase().trim();
+            listaSugerencias.innerHTML = '';
+
+            if (termino.length < 1) {
+                listaSugerencias.style.display = 'none';
+                return;
+            }
+
+            const filtradas = cancionesCache.filter(song => song.nombre.includes(termino));
+
+            if (filtradas.length > 0) {
+                filtradas.forEach(song => {
+                    const div = document.createElement('div');
+                    div.className = 'sugerencia-item';
+                    // Obtener nombre limpio sin el emoji inicial
+                    const nombreLimpio = song.elemento.querySelector('.nombre-cancion').textContent.replace('🎵 ', '');
+                    div.innerHTML = `<span>🎵</span> ${nombreLimpio}`;
+                    div.onclick = () => {
+                        inputBusqueda.value = "";
+                        listaSugerencias.style.display = 'none';
+
+                        // Scroll y reproducción
+                        song.elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        setTimeout(() => {
+                            if (song.audio) {
+                                detenerTodo(song.audio);
+                                song.audio.play().catch(() => { });
+                            }
+                        }, 500);
+                    };
+                    listaSugerencias.appendChild(div);
+                });
+                listaSugerencias.style.display = 'block';
+            } else {
+                listaSugerencias.style.display = 'none';
+            }
+        });
+
+        // Cerrar sugerencias al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (!inputBusqueda.contains(e.target) && !listaSugerencias.contains(e.target)) {
+                listaSugerencias.style.display = 'none';
+            }
         });
 
         // Inyectar canvas y configurar eventos una sola vez
