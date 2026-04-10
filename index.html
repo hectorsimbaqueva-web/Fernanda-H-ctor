@@ -511,6 +511,88 @@
                 transform: rotate(-20deg) scale(1);
             }
         }
+
+        /* --- ESTILOS DEL BUSCADOR --- */
+        .buscador-container {
+            margin: 20px auto 40px;
+            max-width: 600px;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 8px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 10;
+        }
+
+        .buscador-container:focus-within {
+            border-color: var(--acento-neon);
+            box-shadow: 0 0 25px rgba(0, 200, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .buscador-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-family: inherit;
+        }
+
+        .buscador-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .buscador-btn {
+            background: linear-gradient(135deg, var(--acento-neon), #0082ff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 30px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 200, 255, 0.3);
+        }
+
+        .buscador-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--acento-neon);
+            filter: brightness(1.1);
+        }
+
+        .highlight-cancion {
+            animation: pushHighlight 2.5s ease;
+        }
+
+        @keyframes pushHighlight {
+            0% {
+                border-color: var(--acento-neon);
+                box-shadow: 0 0 0px var(--acento-neon);
+                transform: scale(1);
+            }
+
+            30% {
+                border-color: #fff;
+                box-shadow: 0 0 40px var(--acento-neon);
+                transform: scale(1.05);
+            }
+
+            100% {
+                border-color: rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+                transform: scale(1);
+            }
+        }
     </style>
 
 </head>
@@ -521,6 +603,13 @@
     <div class="contenedor">
         <h1><span class="corazon-palpitante">💗</span> Fernanda & Héctor <span class="corazon-palpitante">💗</span></h1>
         <span class="fecha">12/Octubre/2025</span>
+
+        <!-- BUSCADOR DE CANCIONES -->
+        <div class="buscador-container">
+            <input type="text" id="inputBusqueda" class="buscador-input" placeholder="¿Qué canción quieres escuchar?..."
+                onkeypress="if(event.key === 'Enter') buscarCancion()">
+            <button class="buscador-btn" onclick="buscarCancion()">🔎 BUSCAR</button>
+        </div>
 
         <div class="musica-galeria">
             <div class="reproductor-container">
@@ -1046,6 +1135,52 @@
             } else {
                 v.pause();
                 if (btn) btn.innerText = "🔊 Reproducir";
+            }
+        }
+
+        // --- LÓGICA DE BÚSQUEDA ---
+        function buscarCancion() {
+            const query = document.getElementById('inputBusqueda').value.toLowerCase().trim();
+            if (!query) return;
+
+            const reproductores = document.querySelectorAll('.reproductor');
+            let encontrada = false;
+
+            reproductores.forEach(rep => {
+                const titulo = rep.querySelector('.nombre-cancion').innerText.toLowerCase();
+                const audio = rep.querySelector('audio');
+
+                if (titulo.includes(query) && !encontrada) {
+                    encontrada = true;
+
+                    // Detener otros audios
+                    detenerTodo(audio);
+
+                    // Desplazarse a la canción
+                    rep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    // Animación de resaltado
+                    rep.classList.remove('highlight-cancion');
+                    void rep.offsetWidth; // Force reflow
+                    rep.classList.add('highlight-cancion');
+
+                    // Reproducir automáticamente
+                    audio.play().catch(e => console.log("Auto-play prevented:", e));
+
+                    // Limpiar búsqueda
+                    // document.getElementById('inputBusqueda').value = "";
+                }
+            });
+
+            if (!encontrada) {
+                const btn = document.querySelector('.buscador-btn');
+                const originalText = btn.innerText;
+                btn.innerText = "❌ NO ENCONTRADA";
+                btn.style.background = "#ff4b2b";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = "";
+                }, 2000);
             }
         }
 
