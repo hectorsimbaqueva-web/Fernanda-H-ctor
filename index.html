@@ -1499,7 +1499,12 @@
                 }
             });
             document.querySelectorAll('audio').forEach(a => {
-                if (a !== exceptoElemento) a.pause();
+                if (a !== exceptoElemento) {
+                    a.pause();
+                    // Quitar resaltado de canciones que se detienen
+                    const parent = a.closest('.reproductor');
+                    if (parent) parent.classList.remove('resaltado');
+                }
             });
         }
 
@@ -1670,6 +1675,15 @@
             audio.addEventListener('play', (e) => {
                 detenerTodo(e.target);
                 iniciarVisualizador(e.target);
+                // Añadir resaltado a la canción que empieza a sonar
+                const parent = e.target.closest('.reproductor');
+                if (parent) parent.classList.add('resaltado');
+            });
+
+            audio.addEventListener('pause', (e) => {
+                // Quitar resaltado al pausar
+                const parent = e.target.closest('.reproductor');
+                if (parent) parent.classList.remove('resaltado');
             });
 
             audio.addEventListener('ended', () => {
