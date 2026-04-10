@@ -991,88 +991,139 @@
             }
         }
 
-        /* --- ESTILOS REDES SOCIALES --- */
-        .redes-sociales-container {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin: 0 auto 40px;
-            padding: 10px;
-            animation: fadeInDown 0.8s ease-out;
+        /* --- ESTILOS BUSCADOR YOUTUBE API --- */
+        .youtube-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            width: 100%;
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
         }
 
-        @keyframes fadeInDown {
+        /* Scrollbar para resultados */
+        .youtube-results-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .youtube-results-grid::-webkit-scrollbar-thumb {
+            background: var(--kitty-pink);
+            border-radius: 10px;
+        }
+
+        .yt-card {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease-out both;
+        }
+
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: scale(0.9);
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: scale(1);
             }
         }
 
-        .social-icon {
-            width: 55px;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            padding: 12px;
-            border: 2px solid var(--kitty-pink-soft);
+        .yt-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            background: rgba(40, 40, 40, 0.8);
+            border-color: var(--kitty-pink);
+            box-shadow: 0 15px 30px rgba(255, 77, 148, 0.3);
+        }
+
+        .yt-thumb-container {
             position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
             overflow: hidden;
         }
 
-        .social-icon:hover {
-            transform: translateY(-10px) rotate(8deg);
-            background: #fff;
-            border-color: var(--kitty-pink);
-            box-shadow: 0 15px 35px rgba(255, 77, 148, 0.4);
-        }
-
-        .social-icon img {
+        .yt-thumb {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            object-fit: cover;
+            transition: transform 0.5s ease;
         }
 
-        /* Efecto de brillo sutil en hover */
-        .social-icon::after {
-            content: '';
+        .yt-card:hover .yt-thumb {
+            transform: scale(1.1);
+        }
+
+        .yt-play-overlay {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transform: rotate(45deg);
-            transition: 0.5s;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 77, 148, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .social-icon:hover::after {
-            left: 150%;
-            top: 150%;
+        .yt-card:hover .yt-play-overlay {
+            opacity: 1;
         }
 
-        @media (max-width: 480px) {
-            .redes-sociales-container {
-                gap: 20px;
-                margin-bottom: 30px;
-            }
+        .yt-play-icon {
+            font-size: 2.5rem;
+            color: white;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+        }
 
-            .social-icon {
-                width: 50px;
-                height: 50px;
-                padding: 11px;
-            }
+        .yt-info {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .yt-title {
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .yt-channel {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Estado cargando/vacio */
+        .yt-loading-msg {
+            grid-column: 1 / -1;
+            padding: 40px;
+            text-align: center;
+            color: var(--kitty-pink);
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
         }
     </style>
 
@@ -1092,22 +1143,6 @@
             <div id="lista-sugerencias" class="sugerencias-container"></div>
         </div>
 
-        <!-- SECCIÓN: REDES SOCIALES -->
-        <div class="redes-sociales-container">
-            <a href="[PEGAR LINK]" target="_blank" class="social-icon" id="link-facebook" title="Facebook">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook">
-            </a>
-            <a href="[PEGAR LINK]" target="_blank" class="social-icon" id="link-instagram" title="Instagram">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" alt="Instagram">
-            </a>
-            <a href="[PEGAR LINK]" target="_blank" class="social-icon" id="link-tiktok" title="TikTok">
-                <img src="https://www.svgrepo.com/show/365538/tiktok-logo-logo-svgrepo-com.svg" alt="TikTok">
-            </a>
-            <a href="[PEGAR LINK]" target="_blank" class="social-icon" id="link-youtube" title="YouTube">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg"
-                    alt="YouTube">
-            </a>
-        </div>
 
         <!-- SECCIÓN: REPRODUCTOR DE VIDEO INDEPENDIENTE -->
         <section class="video-independiente-section">
@@ -1129,6 +1164,9 @@
             </div>
             <div id="video-error" class="video-error-msg">⚠️ El enlace no es válido o no es compatible. Intenta con
                 otro, mi amor.</div>
+
+            <!-- CONTENEDOR DE RESULTADOS DE BÚSQUEDA YOUTUBE -->
+            <div id="youtube-results-container" class="youtube-results-grid"></div>
         </section>
 
         <div class="musica-galeria">
@@ -2204,13 +2242,15 @@
                 }
             });
         });
-        // --- LÓGICA DEL REPRODUCTOR DE VIDEO INDEPENDIENTE ---
-        function cargarVideoIndependiente() {
+        // --- LÓGICA DEL REPRODUCTOR DE VIDEO INDEPENDIENTE + YOUTUBE API ---
+
+        // --- ESPACIO PARA TU API_KEY DE GOOGLE CLOUD ---
+        const YOUTUBE_API_KEY = 'AIzaSyAzUyefuc-8LQPoDbybCMprcPLhLzb1dHY';
+
+        async function cargarVideoIndependiente() {
             const input = document.getElementById('input-video-url');
-            const iframe = document.getElementById('iframe-video-independiente');
-            const placeholder = document.getElementById('video-placeholder-msg');
-            const errorMsg = document.getElementById('video-error');
             const url = input.value.trim();
+            const errorMsg = document.getElementById('video-error');
 
             errorMsg.style.display = 'none';
 
@@ -2219,19 +2259,25 @@
                 return;
             }
 
-            let embedUrl = "";
+            // Detectar si es un enlace o una búsqueda por palabra clave
+            const esEnlace = /^(http|https|www\.)|(\.com|\.be|\.net)/.test(url.toLowerCase());
 
+            if (esEnlace) {
+                procesarLinkDirecto(url);
+            } else {
+                buscarVideosYoutube(url);
+            }
+        }
+
+        function procesarLinkDirecto(url) {
+            let embedUrl = "";
             try {
                 // Lógica para YouTube
                 if (url.includes("youtube.com") || url.includes("youtu.be")) {
                     let videoId = "";
-                    if (url.includes("v=")) {
-                        videoId = url.split("v=")[1].split("&")[0];
-                    } else if (url.includes("youtu.be/")) {
-                        videoId = url.split("youtu.be/")[1].split("?")[0];
-                    } else if (url.includes("embed/")) {
-                        videoId = url.split("embed/")[1].split("?")[0];
-                    }
+                    if (url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
+                    else if (url.includes("youtu.be/")) videoId = url.split("youtu.be/")[1].split("?")[0];
+                    else if (url.includes("embed/")) videoId = url.split("embed/")[1].split("?")[0];
                     if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0`;
                 }
                 // Lógica para Vimeo
@@ -2244,42 +2290,113 @@
                     let videoId = url.split("/video/")[1].split("?")[0];
                     if (videoId) embedUrl = `https://www.dailymotion.com/embed/video/${videoId}`;
                 }
-                // Otros (intenta usar el link tal cual si es HTTPS y parece válido)
+                // Otros embeds compatibles
                 else if (url.startsWith("http") && (url.includes("embed") || url.includes("player"))) {
                     embedUrl = url;
                 }
             } catch (e) {
-                console.error("Error parsing URL:", e);
+                console.error("Error al procesar link:", e);
             }
 
             if (embedUrl) {
-                // Detener cualquier audio o video de la página antes de cargar el nuevo video
-                detenerTodo();
-
-                iframe.src = embedUrl;
-                iframe.style.display = 'block';
-                placeholder.style.display = 'none';
-                input.value = "";
-                input.blur();
-
-                // Scroll suave al video si estamos en móvil para asegurar que se vea
-                if (window.innerWidth < 768) {
-                    iframe.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
+                reproducirVideoIframe(embedUrl);
+                document.getElementById('input-video-url').value = "";
+                document.getElementById('youtube-results-container').innerHTML = ""; // Limpiar resultados previos
             } else {
                 mostrarErrorVideo();
             }
         }
 
-        function mostrarErrorVideo() {
-            const errorMsg = document.getElementById('video-error');
-            errorMsg.style.display = 'block';
-            setTimeout(() => {
-                errorMsg.style.display = 'none';
-            }, 5000);
+        async function buscarVideosYoutube(query) {
+            const container = document.getElementById('youtube-results-container');
+            container.innerHTML = `<div class="yt-loading-msg">Buscando videos para mi princesa... ✨</div>`;
+
+            if (!YOUTUBE_API_KEY || YOUTUBE_API_KEY === 'TU_API_KEY_AQUI') {
+                container.innerHTML = `<div class="yt-loading-msg" style="color: #ff4d4d; background: rgba(0,0,0,0.3); border-radius: 15px; padding: 20px;">
+                    ⚠️ Error: Por favor, configura tu API_KEY de YouTube en el código.
+                </div>`;
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=12&q=${encodeURIComponent(query)}&type=video&key=${YOUTUBE_API_KEY}`);
+
+                if (!response.ok) throw new Error("Error en la respuesta de la API");
+
+                const data = await response.json();
+
+                if (data.items && data.items.length > 0) {
+                    renderizarResultadosYoutube(data.items);
+                } else {
+                    container.innerHTML = `<div class="yt-loading-msg">No encontré resultados para "${query}". Intenta de nuevo, mi amor. ❤️</div>`;
+                }
+            } catch (error) {
+                console.error("Error API YouTube:", error);
+                container.innerHTML = `<div class="yt-loading-msg" style="color: #ff4d4d;">⚠️ Hubo un error con la búsqueda. Verifica tu API KEY o cuota.</div>`;
+            }
         }
 
-        // Soporte para cargar con la tecla Enter en el input de video
+        function renderizarResultadosYoutube(videos) {
+            const container = document.getElementById('youtube-results-container');
+            container.innerHTML = "";
+
+            videos.forEach(video => {
+                const videoId = video.id.videoId;
+                const { title, thumbnails, channelTitle } = video.snippet;
+
+                const card = document.createElement('div');
+                card.className = 'yt-card';
+                card.onclick = () => {
+                    reproducirVideoIframe(`https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`);
+                    // Subir al reproductor cuando se elige un video
+                    window.scrollTo({
+                        top: document.querySelector('.video-independiente-section').offsetTop - 30,
+                        behavior: 'smooth'
+                    });
+                };
+
+                card.innerHTML = `
+                    <div class="yt-thumb-container">
+                        <img src="${thumbnails.medium.url}" class="yt-thumb" alt="${title}" loading="lazy">
+                        <div class="yt-play-overlay">
+                            <span class="yt-play-icon">▶️</span>
+                        </div>
+                    </div>
+                    <div class="yt-info">
+                        <h3 class="yt-title" title="${title}">${title}</h3>
+                        <span class="yt-channel">${channelTitle}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Scroll suave hacia los resultados si estamos en móvil
+            if (window.innerWidth < 768) {
+                container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function reproducirVideoIframe(embedUrl) {
+            const iframe = document.getElementById('iframe-video-independiente');
+            const placeholder = document.getElementById('video-placeholder-msg');
+
+            detenerTodo();
+            iframe.src = embedUrl;
+            iframe.style.display = 'block';
+            placeholder.style.display = 'none';
+        }
+
+        function mostrarErrorVideo() {
+            const errorMsg = document.getElementById('video-error');
+            if (errorMsg) {
+                errorMsg.style.display = 'block';
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Event listener para tecla Enter
         document.getElementById('input-video-url')?.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 cargarVideoIndependiente();
