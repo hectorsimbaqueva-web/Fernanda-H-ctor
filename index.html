@@ -830,6 +830,414 @@
             background: var(--acento-neon);
             border-radius: 3px;
         }
+
+        /* --- ESTILOS DE LA PANTALLA DE VIDEOS --- */
+        .video-section-container {
+            background: rgba(40, 10, 25, 0.7);
+            backdrop-filter: blur(25px);
+            border: 2px solid var(--kitty-pink);
+            border-radius: 30px;
+            padding: 30px;
+            margin: 40px auto;
+            width: 100%;
+            max-width: 1100px;
+            box-shadow: 0 20px 60px rgba(255, 26, 117, 0.3), inset 0 0 20px rgba(0, 200, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-section-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, var(--kitty-pink) 0%, transparent 70%);
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .video-section-titulo {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
+            color: #ffffff;
+            margin-bottom: 25px;
+            text-shadow: 0 0 15px var(--kitty-pink), 0 0 30px var(--kitty-pink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .buscador-video-container {
+            margin: 0 auto 30px;
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .video-buscador-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 200, 255, 0.4);
+            border-radius: 50px;
+            padding: 12px 25px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .video-buscador-input:focus {
+            border-color: var(--acento-neon-azul);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+        }
+
+        .video-buscador-btn {
+            background: var(--acento-neon-azul);
+            border: none;
+            border-radius: 50px;
+            padding: 0 25px;
+            color: #0b0b1a;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .video-buscador-btn:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+            box-shadow: 0 0 20px var(--acento-neon-azul);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+            gap: 20px;
+            width: 100%;
+        }
+
+        .video-card {
+            background: rgba(15, 15, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 15px;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--kitty-pink);
+            background: rgba(15, 15, 25, 0.8);
+            box-shadow: 0 10px 30px rgba(255, 77, 148, 0.2);
+        }
+
+        .video-wrapper-mini {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            position: relative;
+        }
+
+        .video-wrapper-mini video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-info {
+            text-align: left;
+        }
+
+        .video-nombre {
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .video-tag {
+            color: var(--acento-neon-azul);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .btn-video-play {
+            margin-top: 10px;
+            background: transparent;
+            border: 1px solid var(--kitty-pink);
+            color: var(--kitty-pink);
+            border-radius: 50px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-video-play:hover {
+            background: var(--kitty-pink);
+            color: white;
+        }
+
+        .video-card.resaltado {
+            animation: pulsoVideo 2s ease;
+            border-color: var(--acento-neon-azul) !important;
+            box-shadow: 0 0 30px rgba(0, 200, 255, 0.5) !important;
+        }
+
+        /* --- ESTILOS REPRODUCTOR YOUTUBE --- */
+        .youtube-main-container {
+            width: 100%;
+            margin-bottom: 30px;
+            display: none;
+            /* Se muestra al buscar o seleccionar */
+            animation: fadeIn 0.5s ease;
+            text-align: center;
+        }
+
+        .youtube-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 24px;
+            border: 4px solid var(--acento-neon-azul);
+            box-shadow: 0 0 50px rgba(0, 200, 255, 0.5);
+            background: #000;
+        }
+
+        .youtube-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .btn-cerrar-yt {
+            background: linear-gradient(135deg, #ff1a75, #ff4d94);
+            border: none;
+            color: white;
+            padding: 8px 25px;
+            border-radius: 50px;
+            margin-top: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 26, 117, 0.3);
+        }
+
+        .btn-cerrar-yt:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* --- ESTILOS RESULTADOS DE BÚSQUEDA --- */
+        .yt-resultados-container {
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+            width: 100%;
+        }
+
+        .yt-resultados-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .yt-card-resultado {
+            background: rgba(15, 15, 25, 0.8);
+            border: 1px solid rgba(0, 200, 255, 0.4);
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .yt-card-resultado:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: var(--acento-neon-azul);
+            box-shadow: 0 10px 30px rgba(0, 200, 255, 0.3);
+        }
+
+        .yt-thumb-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+        }
+
+        .yt-thumb-res {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .yt-play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .yt-card-resultado:hover .yt-play-overlay {
+            opacity: 1;
+        }
+
+        .yt-play-icon {
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 0 0 15px var(--acento-neon-azul);
+        }
+
+        .yt-info-resultado {
+            padding: 12px;
+            text-align: left;
+        }
+
+        .yt-titulo-res {
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+
+        .yt-status-busqueda {
+            color: var(--acento-neon-azul);
+            margin: 20px 0;
+            font-weight: bold;
+            display: none;
+            font-style: italic;
+        }
+
+        .yt-opciones-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .yt-opciones-titulo {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px var(--acento-neon-azul);
+            font-family: 'Bubblegum Sans', cursive;
+        }
+
+        .yt-grid-sugerencias {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .yt-card-sugerencia {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            border-radius: 15px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .yt-card-sugerencia:hover {
+            background: rgba(0, 200, 255, 0.15);
+            border-color: var(--acento-neon-azul);
+            transform: translateY(-5px);
+        }
+
+        .yt-thumb {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 8px;
+        }
+
+        .yt-card-nombre {
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: block;
+            line-height: 1.2;
+        }
+
+        .ayuda-busqueda {
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulsoVideo {
+            0% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .video-section-container {
+                padding: 20px 15px;
+            }
+
+            .buscador-video-container {
+                flex-direction: column;
+            }
+
+            .video-buscador-btn {
+                padding: 12px;
+            }
+        }
     </style>
 
 </head>
@@ -846,6 +1254,107 @@
                 placeholder="¿Qué canción quiere escuchar mi princesa?" autocomplete="off">
             <button id="btn-buscar" class="buscador-btn">🔍 Buscar</button>
             <div id="lista-sugerencias" class="sugerencias-container"></div>
+        </div>
+
+        <!-- SECCIÓN DE VIDEOS INDEPENDIENTE -->
+        <div class="video-section-container">
+            <h2 class="video-section-titulo">🎬 Nuestra Pantalla de Videos 🎬</h2>
+
+            <div class="buscador-video-container">
+                <input type="text" id="input-busqueda-video" class="video-buscador-input"
+                    placeholder="Busca cualquier canción o video..." autocomplete="off">
+                <button id="btn-buscar-video" class="video-buscador-btn">🔍 BUSCAR</button>
+            </div>
+
+            <p id="yt-status" class="yt-status-busqueda">✨ Buscando opciones increíbles para ti...</p>
+
+            <!-- REPRODUCTOR DE YOUTUBE -->
+            <div id="youtube-main-container" class="youtube-main-container">
+                <div class="youtube-wrapper">
+                    <iframe id="youtube-iframe" src=""
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+                <button class="btn-cerrar-yt" onclick="cerrarYouTube()">❌ Cerrar Reproductor</button>
+            </div>
+
+            <!-- RESULTADOS DE BÚSQUEDA DE YOUTUBE -->
+            <div id="yt-resultados-container" class="yt-resultados-container">
+                <h3 class="yt-opciones-titulo">🎵 Resultados para nuestra búsqueda 🎵</h3>
+                <div id="yt-resultados-grid" class="yt-resultados-grid"></div>
+            </div>
+
+            <!-- GALERÍA DE OPCIONES / SUGERENCIAS -->
+            <div class="yt-opciones-container">
+                <h3 class="yt-opciones-titulo">✨ Sugerencias de YouTube para nosotros ✨</h3>
+                <div class="yt-grid-sugerencias">
+                    <div class="yt-card-sugerencia" onclick="cargarVideoYT('450p7goxZqg')">
+                        <img src="https://img.youtube.com/vi/450p7goxZqg/mqdefault.jpg" class="yt-thumb">
+                        <span class="yt-card-nombre">All of Me - John Legend</span>
+                    </div>
+                    <div class="yt-card-sugerencia" onclick="cargarVideoYT('2Vv-BfVoq4g')">
+                        <img src="https://img.youtube.com/vi/2Vv-BfVoq4g/mqdefault.jpg" class="yt-thumb">
+                        <span class="yt-card-nombre">Perfect - Ed Sheeran</span>
+                    </div>
+                    <div class="yt-card-sugerencia" onclick="cargarVideoYT('rtOvBOTyXFE')">
+                        <img src="https://img.youtube.com/vi/rtOvBOTyXFE/mqdefault.jpg" class="yt-thumb">
+                        <span class="yt-card-nombre">A Thousand Years</span>
+                    </div>
+                    <div class="yt-card-sugerencia" onclick="cargarVideoYT('lp-EO5I6OHQ')">
+                        <img src="https://img.youtube.com/vi/lp-EO5I6OHQ/mqdefault.jpg" class="yt-thumb">
+                        <span class="yt-card-nombre">Say You Won't Let Go</span>
+                    </div>
+                    <div class="yt-card-sugerencia" onclick="cargarVideoYT('09R8_2nJtjg')">
+                        <img src="https://img.youtube.com/vi/09R8_2nJtjg/mqdefault.jpg" class="yt-thumb">
+                        <span class="yt-card-nombre">Sugar - Maroon 5</span>
+                    </div>
+                    <div class="yt-card-sugerencia" onclick="cargarVideoYT('hT_nvWreIhg')">
+                        <img src="https://img.youtube.com/vi/hT_nvWreIhg/mqdefault.jpg" class="yt-thumb">
+                        <span class="yt-card-nombre">Thinking Out Loud</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-grid" id="video-grid">
+                <div class="video-card" data-nombre="Recuerdo especial video 14">
+                    <div class="video-wrapper-mini">
+                        <video id="video-sec-14" loop playsinline preload="none">
+                            <source src="./14.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-tag">Momento Especial</span>
+                        <span class="video-nombre">Nuestro Recuerdo #14</span>
+                    </div>
+                    <button class="btn-video-play" onclick="toggleAudio('video-sec-14', event)">▶ Reproducir</button>
+                </div>
+
+                <div class="video-card" data-nombre="Momento juntos video 12">
+                    <div class="video-wrapper-mini">
+                        <video id="video-sec-12" loop playsinline preload="none">
+                            <source src="./12.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-tag">Para Ti</span>
+                        <span class="video-nombre">Nuestro Recuerdo #12</span>
+                    </div>
+                    <button class="btn-video-play" onclick="toggleAudio('video-sec-12', event)">▶ Reproducir</button>
+                </div>
+
+                <div class="video-card" data-nombre="Cada día contigo video 6">
+                    <div class="video-wrapper-mini">
+                        <video id="video-sec-6" loop playsinline preload="none">
+                            <source src="./6.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <span class="video-tag">Amor Verdadero</span>
+                        <span class="video-nombre">Nuestro Recuerdo #6</span>
+                    </div>
+                    <button class="btn-video-play" onclick="toggleAudio('video-sec-6', event)">▶ Reproducir</button>
+                </div>
+            </div>
         </div>
 
         <div class="musica-galeria">
@@ -1577,41 +2086,6 @@
                 <p class="frase">"Prometo amarte en cada momento y de todas las maneras, porque tú mereces lo más
                     hermoso.❤️✨"</p>
             </div>
-
-            <div class="tarjeta">
-                <div class="media-wrapper">
-                    <video id="video14" loop playsinline preload="none">
-                        <source src="./14.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <button class="btn-audio" onclick="toggleAudio('video14', event)">🔊 Activar Sonido</button>
-                <p class="frase">"No he sido el hombre perfecto, pero sí el que te quiere y siempre estará contigo, pase
-                    lo que pase.❤️‍🩹✨"</p>
-            </div>
-
-            <div class="tarjeta">
-                <div class="media-wrapper">
-                    <video id="video12" loop playsinline preload="none">
-                        <source src="./12.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <button class="btn-audio" onclick="toggleAudio('video12', event)">🔊 Activar Sonido</button>
-                <p class="frase">"Eres la mejor mujer que ha llegado a mi vida y el regalo más hermoso que he
-                    recibido.💖✨"
-                </p>
-            </div>
-
-            <div class="tarjeta">
-                <div class="media-wrapper">
-                    <video id="video6" loop playsinline preload="none">
-                        <source src="./6.mp4" type="video/mp4">
-                    </video>
-                </div>
-                <button class="btn-audio" onclick="toggleAudio('video6', event)">🔊 Activar Sonido</button>
-                <p class="frase">"Cada día contigo es un regalo que guardo en mi corazón, porque a tu lado aprendí lo
-                    que significa amar de verdad.❤️"</p>
-            </div>
-
         </div>
 
         <div class="acrostico-live">
@@ -1920,6 +2394,98 @@
                     nextAudio.closest('.reproductor').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             });
+        });
+
+        // --- LÓGICA DEL BUSCADOR DE VIDEOS (YOUTUBE + LOCAL) ---
+        const inputBusquedaVideo = document.getElementById('input-busqueda-video');
+        const btnBuscarVideo = document.getElementById('btn-buscar-video');
+        const youtubeContainer = document.getElementById('youtube-main-container');
+        const youtubeIframe = document.getElementById('youtube-iframe');
+        const videoCards = Array.from(document.querySelectorAll('.video-card'));
+
+        function cerrarYouTube() {
+            youtubeContainer.style.display = 'none';
+            youtubeIframe.src = '';
+        }
+
+        function cargarVideoYT(id) {
+            youtubeContainer.style.display = 'block';
+            youtubeContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            youtubeIframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+            detenerTodo(null);
+        }
+
+        function realizarBusquedaVideo() {
+            const termino = inputBusquedaVideo.value.trim();
+            if (termino === "") return;
+
+            const resultadosContainer = document.getElementById('yt-resultados-container');
+            const resultadosGrid = document.getElementById('yt-resultados-grid');
+            const statusBusqueda = document.getElementById('yt-status');
+
+            resultadosContainer.style.display = 'none';
+            statusBusqueda.style.display = 'block';
+
+            if (termino.includes("youtube.com") || termino.includes("youtu.be")) {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = termino.match(regExp);
+                if (match && match[2].length == 11) {
+                    cargarVideoYT(match[2]);
+                    inputBusquedaVideo.value = "";
+                    statusBusqueda.style.display = 'none';
+                    return;
+                }
+            }
+
+            // Usamos una instancia pública de Invidious para buscar y mostrar resultados en la misma página
+            const proxyUrl = `https://yewtu.be/api/v1/search?q=${encodeURIComponent(termino)}&type=video`;
+
+            fetch(proxyUrl)
+                .then(response => response.json())
+                .then(data => {
+                    statusBusqueda.style.display = 'none';
+                    resultadosGrid.innerHTML = '';
+
+                    if (!data || data.length === 0) {
+                        alert("No encontré opciones directamente, intentemos con otro término ❤️");
+                        return;
+                    }
+
+                    data.slice(0, 8).forEach(video => {
+                        const card = document.createElement('div');
+                        card.className = 'yt-card-resultado';
+                        card.onclick = () => {
+                            cargarVideoYT(video.videoId);
+                            resultadosContainer.style.display = 'none';
+                        };
+
+                        card.innerHTML = `
+                            <div class="yt-thumb-container">
+                                <img src="${video.videoThumbnails[0].url}" class="yt-thumb-res" loading="lazy">
+                                <div class="yt-play-overlay">
+                                    <span class="yt-play-icon">▶</span>
+                                </div>
+                            </div>
+                            <div class="yt-info-resultado">
+                                <span class="yt-titulo-res">${video.title}</span>
+                            </div>
+                        `;
+                        resultadosGrid.appendChild(card);
+                    });
+
+                    resultadosContainer.style.display = 'block';
+                    resultadosContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                })
+                .catch(err => {
+                    statusBusqueda.style.display = 'none';
+                    console.error("Error buscando en YT:", err);
+                    alert("Se agotaron los intentos de búsqueda automática. ¡Intenta buscar de nuevo! ❤️");
+                });
+        }
+
+        btnBuscarVideo.addEventListener('click', realizarBusquedaVideo);
+        inputBusquedaVideo.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') realizarBusquedaVideo();
         });
     </script>
 </body>
