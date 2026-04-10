@@ -144,6 +144,14 @@
             }
         }
 
+        /* Optimización de rendimiento para animaciones */
+        .reproductor,
+        .tarjeta,
+        .buscador-btn,
+        .btn-audio {
+            will-change: transform;
+        }
+
         .galeria {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
@@ -626,7 +634,7 @@
 
         <div class="buscador-container">
             <input type="text" id="input-busqueda" class="buscador-input"
-                placeholder="¿Qué canción quieres escuchar?..." autocomplete="off">
+                placeholder="¿Qué canción quiere escuchar mi princesa?" autocomplete="off">
             <button id="btn-buscar" class="buscador-btn">🔍 Buscar</button>
         </div>
 
@@ -996,14 +1004,14 @@
         <div class="galeria">
             <div class="tarjeta">
                 <div class="media-wrapper">
-                    <img src="./27.jpg" alt="Foto 1">
+                    <img src="./27.jpg" alt="Recuerdo especial" loading="lazy">
                 </div>
                 <p class="frase">"Si Dios me concediera un deseo, sería estar contigo toda la vida.❤️✨"</p>
             </div>
 
             <div class="tarjeta">
                 <div class="media-wrapper">
-                    <img src="./30.jpg" alt="Foto 2">
+                    <img src="./30.jpg" alt="Momento juntos" loading="lazy">
                 </div>
                 <p class="frase">"Prometo amarte en cada momento y de todas las maneras, porque tú mereces lo más
                     hermoso.❤️✨"</p>
@@ -1011,7 +1019,7 @@
 
             <div class="tarjeta">
                 <div class="media-wrapper">
-                    <video id="video14" loop playsinline>
+                    <video id="video14" loop playsinline preload="none">
                         <source src="./14.mp4" type="video/mp4">
                     </video>
                 </div>
@@ -1022,7 +1030,7 @@
 
             <div class="tarjeta">
                 <div class="media-wrapper">
-                    <video id="video12" loop playsinline>
+                    <video id="video12" loop playsinline preload="none">
                         <source src="./12.mp4" type="video/mp4">
                     </video>
                 </div>
@@ -1034,7 +1042,7 @@
 
             <div class="tarjeta">
                 <div class="media-wrapper">
-                    <video id="video6" loop playsinline>
+                    <video id="video6" loop playsinline preload="none">
                         <source src="./6.mp4" type="video/mp4">
                     </video>
                 </div>
@@ -1178,7 +1186,6 @@
             resumeAudioContext();
             if (!audioContext) return;
 
-            // Asegurar que el audio tenga crossOrigin para evitar CORS si se sube a un server
             if (!audio.crossOrigin) audio.crossOrigin = "anonymous";
 
             let analizer;
@@ -1191,7 +1198,6 @@
                     analizer.fftSize = 128;
                     analizadores.set(audio, analizer);
                 } catch (e) {
-                    console.warn("Visualizador: Usando modo fallback (CORS o ya conectado).");
                     analizer = null;
                 }
             } else {
@@ -1199,140 +1205,87 @@
             }
 
             const reproductor = audio.closest('.reproductor');
-            const canvas = reproductor ? reproductor.querySelector('.visualizador-audio') : null;
-            if (!canvas) return;
+            const canvasV = reproductor?.querySelector('.visualizador-audio');
+            if (!canvasV) return;
 
-            // Evitar múltiples bucles para el mismo audio
             if (loopsAnimacion.get(audio)) {
                 cancelAnimationFrame(loopsAnimacion.get(audio));
             }
 
-            const ctxV = canvas.getContext('2d');
+            const ctxV = canvasV.getContext('2d', { alpha: true });
             const bufferLength = analizer ? analizer.frequencyBinCount : 32;
             const dataArray = new Uint8Array(bufferLength);
 
             function animar() {
                 if (audio.paused || audio.ended) {
-                    ctxV.clearRect(0, 0, canvas.width, canvas.height);
+                    ctxV.clearRect(0, 0, canvasV.width, canvasV.height);
                     loopsAnimacion.set(audio, null);
                     return;
                 }
 
-                const loopId = requestAnimationFrame(animar);
-                loopsAnimacion.set(audio, loopId);
+                loopsAnimacion.set(audio, requestAnimationFrame(animar));
+                if (analizer) analizer.getByteFrequencyData(dataArray);
 
-                if (analizer) {
-                    analizer.getByteFrequencyData(dataArray);
-                }
+                const width = canvasV.width = canvasV.clientWidth;
+                const height = canvasV.height = canvasV.clientHeight;
 
-                if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
-                    canvas.width = canvas.clientWidth || 300;
-                    canvas.height = canvas.clientHeight || 40;
-                }
+                ctxV.clearRect(0, 0, width, height);
+                ctxV.shadowBlur = 8;
+                ctxV.shadowColor = '#ff00ff';
 
-                ctxV.clearRect(0, 0, canvas.width, canvas.height);
-
-                const width = canvas.width;
-                const height = canvas.height;
                 const barWidth = (width / bufferLength) * 2.5;
                 let x = 0;
 
-                let hasRealData = false;
-                if (analizer) {
-                    for (let i = 0; i < bufferLength; i++) {
-                        if (dataArray[i] > 1) { hasRealData = true; break; }
-                    }
-                }
-
                 for (let i = 0; i < bufferLength; i++) {
-                    let barHeight;
-                    if (hasRealData) {
-                        barHeight = (dataArray[i] / 255) * height;
-                    } else {
-                        const time = Date.now() / 200;
-                        barHeight = (Math.sin(time + i * 0.4) + 1) * (height / 2.5) * (0.8 + Math.random() * 0.4);
-                    }
+                    const val = analizer ? dataArray[i] : (Math.sin(Date.now() / 200 + i * 0.4) + 1) * 100;
+                    const barHeight = (val / 255) * height;
 
-                    // Gradiente neon para las barras
                     const gradient = ctxV.createLinearGradient(0, height, 0, height - barHeight);
                     gradient.addColorStop(0, 'rgba(255, 0, 255, 0.2)');
                     gradient.addColorStop(1, '#ff00ff');
 
-                    ctxV.shadowBlur = 8;
-                    ctxV.shadowColor = '#ff00ff';
                     ctxV.fillStyle = gradient;
-
-                    // Dibujar barra redondeada
-                    const r = 2;
-                    const bh = Math.max(barHeight, 2);
-                    ctxV.fillRect(x, height - bh, barWidth - 4, bh);
+                    ctxV.fillRect(x, height - Math.max(barHeight, 2), barWidth - 4, Math.max(barHeight, 2));
                     x += barWidth;
                 }
             }
-
             animar();
         }
 
-        document.querySelectorAll('audio').forEach((audio, index, audios) => {
-            // Inyectar canvas si no existe
-            const reproductor = audio.closest('.reproductor');
-            if (reproductor && !reproductor.querySelector('.visualizador-audio')) {
-                const canvas = document.createElement('canvas');
-                canvas.className = 'visualizador-audio';
-                reproductor.insertBefore(canvas, audio);
-            }
-
-            audio.addEventListener('play', (e) => {
-                detenerTodo(e.target);
-                iniciarVisualizador(e.target);
-            });
-
-            audio.addEventListener('ended', () => {
-                const nextIndex = index + 1;
-                if (nextIndex < audios.length) {
-                    audios[nextIndex].play();
-                    audios[nextIndex].closest('.reproductor').scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                }
-            });
-        });
-
-        // --- LÓGICA DEL BUSCADOR ---
+        // --- LÓGICA DEL BUSCADOR OPTIMIZADA ---
         const inputBusqueda = document.getElementById('input-busqueda');
         const btnBuscar = document.getElementById('btn-buscar');
+
+        // Pre-cache de canciones para búsquedas instantáneas
+        const cancionesCache = Array.from(document.querySelectorAll('.reproductor')).map(r => ({
+            elemento: r,
+            nombre: r.querySelector('.nombre-cancion').textContent.toLowerCase(),
+            audio: r.querySelector('audio')
+        }));
 
         function realizarBusqueda() {
             const termino = inputBusqueda.value.toLowerCase().trim();
             if (termino === "") return;
 
-            const reproductores = document.querySelectorAll('.reproductor');
+            // Limpiar buscador y desenfocar inmediatamente
+            inputBusqueda.value = "";
+            inputBusqueda.blur();
+
             let encontrado = false;
 
-            reproductores.forEach(reproductor => {
-                const nombre = reproductor.querySelector('.nombre-cancion').textContent.toLowerCase();
+            cancionesCache.forEach(song => {
+                // Limpiar resaltado previo
+                song.elemento.classList.remove('resaltado');
 
-                // Limpiar resaltados previos
-                reproductor.classList.remove('resaltado');
-
-                if (nombre.includes(termino) && !encontrado) {
+                if (song.nombre.includes(termino) && !encontrado) {
                     encontrado = true;
+                    song.elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-                    // Hacer scroll suave hacia el elemento
-                    reproductor.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-
-                    // Aplicar efecto visual
                     setTimeout(() => {
-                        reproductor.classList.add('resaltado');
-
-                        // Reproducir automáticamente la canción encontrada
-                        const audio = reproductor.querySelector('audio');
-                        if (audio) {
-                            audio.play().catch(e => console.log("Reproducción automática bloqueada por el navegador:", e));
+                        song.elemento.classList.add('resaltado');
+                        if (song.audio) {
+                            detenerTodo(song.audio);
+                            song.audio.play().catch(() => { });
                         }
                     }, 500);
                 }
@@ -1349,11 +1302,32 @@
         }
 
         btnBuscar.addEventListener('click', realizarBusqueda);
-
         inputBusqueda.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                realizarBusqueda();
+            if (e.key === 'Enter') realizarBusqueda();
+        });
+
+        // Inyectar canvas y configurar eventos una sola vez
+        const audiosList = document.querySelectorAll('audio');
+        audiosList.forEach((audio, index) => {
+            const reproductor = audio.closest('.reproductor');
+            if (reproductor && !reproductor.querySelector('.visualizador-audio')) {
+                const vCanvas = document.createElement('canvas');
+                vCanvas.className = 'visualizador-audio';
+                reproductor.insertBefore(vCanvas, audio);
             }
+
+            audio.addEventListener('play', (e) => {
+                detenerTodo(e.target);
+                iniciarVisualizador(e.target);
+            });
+
+            audio.addEventListener('ended', () => {
+                const nextAudio = audiosList[index + 1];
+                if (nextAudio) {
+                    nextAudio.play();
+                    nextAudio.closest('.reproductor').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
         });
     </script>
 </body>
