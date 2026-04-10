@@ -515,82 +515,102 @@
         /* --- ESTILOS DEL BUSCADOR --- */
         .buscador-container {
             margin: 20px auto 40px;
-            max-width: 600px;
             display: flex;
             gap: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            padding: 8px;
-            border-radius: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 600px;
+            width: 90%;
             position: relative;
             z-index: 10;
         }
 
-        .buscador-container:focus-within {
-            border-color: var(--acento-neon);
-            box-shadow: 0 0 25px rgba(0, 200, 255, 0.4);
-            transform: translateY(-2px);
-        }
-
         .buscador-input {
             flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(0, 200, 255, 0.3);
+            border-radius: 50px;
+            padding: 15px 30px;
             color: white;
-            padding: 12px 25px;
             font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             font-family: inherit;
         }
 
+        .buscador-input:focus {
+            border-color: var(--acento-neon);
+            box-shadow: 0 0 25px rgba(0, 200, 255, 0.5);
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-2px);
+        }
+
         .buscador-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .buscador-btn {
-            background: linear-gradient(135deg, var(--acento-neon), #0082ff);
-            color: white;
+            background: linear-gradient(135deg, var(--acento-neon), #0064ff);
             border: none;
             border-radius: 50px;
-            padding: 10px 30px;
+            padding: 0 35px;
+            color: white;
+            font-weight: 800;
             cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(0, 200, 255, 0.3);
+            letter-spacing: 2px;
+            box-shadow: 0 8px 20px rgba(0, 200, 255, 0.4);
+            font-size: 0.9rem;
         }
 
         .buscador-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--acento-neon);
-            filter: brightness(1.1);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 30px var(--acento-neon);
+            filter: brightness(1.2);
         }
 
-        .highlight-cancion {
-            animation: pushHighlight 2.5s ease;
+        .buscador-btn:active {
+            transform: translateY(0) scale(0.98);
         }
 
-        @keyframes pushHighlight {
+        .reproductor.resaltado {
+            animation: pulsoNeon 2.5s ease;
+            border-color: #ff00ff !important;
+            box-shadow: 0 0 40px rgba(255, 0, 255, 0.6) !important;
+            z-index: 5;
+        }
+
+        @keyframes pulsoNeon {
             0% {
-                border-color: var(--acento-neon);
-                box-shadow: 0 0 0px var(--acento-neon);
                 transform: scale(1);
             }
 
             30% {
-                border-color: #fff;
-                box-shadow: 0 0 40px var(--acento-neon);
+                transform: scale(1.1);
+            }
+
+            50% {
                 transform: scale(1.05);
             }
 
+            70% {
+                transform: scale(1.08);
+            }
+
             100% {
-                border-color: rgba(255, 255, 255, 0.1);
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
                 transform: scale(1);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .buscador-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .buscador-btn {
+                padding: 15px;
             }
         }
     </style>
@@ -604,11 +624,10 @@
         <h1><span class="corazon-palpitante">💗</span> Fernanda & Héctor <span class="corazon-palpitante">💗</span></h1>
         <span class="fecha">12/Octubre/2025</span>
 
-        <!-- BUSCADOR DE CANCIONES -->
         <div class="buscador-container">
-            <input type="text" id="inputBusqueda" class="buscador-input" placeholder="¿Qué canción quieres escuchar?..."
-                onkeypress="if(event.key === 'Enter') buscarCancion()">
-            <button class="buscador-btn" onclick="buscarCancion()">🔎 BUSCAR</button>
+            <input type="text" id="input-busqueda" class="buscador-input"
+                placeholder="¿Qué canción quieres escuchar?..." autocomplete="off">
+            <button id="btn-buscar" class="buscador-btn">🔍 Buscar</button>
         </div>
 
         <div class="musica-galeria">
@@ -1138,52 +1157,6 @@
             }
         }
 
-        // --- LÓGICA DE BÚSQUEDA ---
-        function buscarCancion() {
-            const query = document.getElementById('inputBusqueda').value.toLowerCase().trim();
-            if (!query) return;
-
-            const reproductores = document.querySelectorAll('.reproductor');
-            let encontrada = false;
-
-            reproductores.forEach(rep => {
-                const titulo = rep.querySelector('.nombre-cancion').innerText.toLowerCase();
-                const audio = rep.querySelector('audio');
-
-                if (titulo.includes(query) && !encontrada) {
-                    encontrada = true;
-
-                    // Detener otros audios
-                    detenerTodo(audio);
-
-                    // Desplazarse a la canción
-                    rep.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                    // Animación de resaltado
-                    rep.classList.remove('highlight-cancion');
-                    void rep.offsetWidth; // Force reflow
-                    rep.classList.add('highlight-cancion');
-
-                    // Reproducir automáticamente
-                    audio.play().catch(e => console.log("Auto-play prevented:", e));
-
-                    // Limpiar búsqueda
-                    // document.getElementById('inputBusqueda').value = "";
-                }
-            });
-
-            if (!encontrada) {
-                const btn = document.querySelector('.buscador-btn');
-                const originalText = btn.innerText;
-                btn.innerText = "❌ NO ENCONTRADA";
-                btn.style.background = "#ff4b2b";
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.style.background = "";
-                }, 2000);
-            }
-        }
-
         // --- LÓGICA DEL VISUALIZADOR DE AUDIO ---
         let audioContext;
         const analizadores = new Map();
@@ -1324,6 +1297,59 @@
                     });
                 }
             });
+        });
+
+        // --- LÓGICA DEL BUSCADOR ---
+        const inputBusqueda = document.getElementById('input-busqueda');
+        const btnBuscar = document.getElementById('btn-buscar');
+
+        function realizarBusqueda() {
+            const termino = inputBusqueda.value.toLowerCase().trim();
+            if (termino === "") return;
+
+            const reproductores = document.querySelectorAll('.reproductor');
+            let encontrado = false;
+
+            reproductores.forEach(reproductor => {
+                const nombre = reproductor.querySelector('.nombre-cancion').textContent.toLowerCase();
+
+                // Limpiar resaltados previos
+                reproductor.classList.remove('resaltado');
+
+                if (nombre.includes(termino) && !encontrado) {
+                    encontrado = true;
+
+                    // Hacer scroll suave hacia el elemento
+                    reproductor.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+
+                    // Aplicar efecto visual
+                    setTimeout(() => {
+                        reproductor.classList.add('resaltado');
+                    }, 500);
+
+                    // Opcional: Reproducir si el usuario lo desea, pero por ahora solo seleccionamos
+                }
+            });
+
+            if (!encontrado) {
+                inputBusqueda.style.borderColor = "#ff4d4d";
+                inputBusqueda.style.boxShadow = "0 0 15px rgba(255, 77, 77, 0.5)";
+                setTimeout(() => {
+                    inputBusqueda.style.borderColor = "";
+                    inputBusqueda.style.boxShadow = "";
+                }, 2000);
+            }
+        }
+
+        btnBuscar.addEventListener('click', realizarBusqueda);
+
+        inputBusqueda.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                realizarBusqueda();
+            }
         });
     </script>
 </body>
