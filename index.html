@@ -849,6 +849,19 @@
             outline: none;
         }
 
+        .btn-control:focus,
+        .btn-control:focus-visible {
+            outline: none;
+            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
+        }
+
+        .btn-control:active {
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
+            transform: scale(0.95);
+        }
+
         .btn-control:hover {
             transform: scale(1.1);
             background: rgba(255, 77, 148, 0.8);
@@ -861,6 +874,17 @@
             font-size: 2rem;
             background: linear-gradient(135deg, var(--kitty-pink), var(--kitty-pink-bold));
             border: 2px solid white;
+        }
+
+        .btn-control.play-btn:focus,
+        .btn-control.play-btn:focus-visible {
+            outline: none;
+            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
+        }
+
+        .btn-control.play-btn:active {
+            outline: none;
+            transform: scale(0.95);
         }
 
         .btn-control.play-btn:hover {
