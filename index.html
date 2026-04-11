@@ -2960,36 +2960,75 @@
             }
         });
 
-        // --- LÓGICA DE REPRODUCTOR PRINCIPAL ---
+        // --- LÓGICA DEL REPRODUCTOR PRINCIPAL ---
         let cancionActualIndex = -1;
         let audioActualPrincipal = null;
         const textoCancionActual = document.getElementById('texto-cancion-actual');
         const btnPlayPause = document.getElementById('btn-play-pause');
 
+        // Lista ESTABLE en el orden original del HTML (antes de que las búsquedas reordenen el DOM)
+        const audiosListaEstable = Array.from(document.querySelectorAll('audio'));
+
+        // --- MEDIA SESSION API: controles en pantalla bloqueada y notificación del móvil ---
+        function actualizarMediaSession(nombreCancion) {
+            if (!('mediaSession' in navigator)) return;
+            const titulo = (nombreCancion || '').replace(/^\uD83C\uDFB5\s*/, '').trim();
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: titulo,
+                artist: '\uD83D\uDC97 Fernanda & Héctor',
+                album: 'Nuestra Playlist',
+                artwork: [
+                    { src: './hello_kitty_mini.png', sizes: '192x192', type: 'image/png' }
+                ]
+            });
+            navigator.mediaSession.playbackState = 'playing';
+        }
+
+        function registrarControlesMediaSession() {
+            if (!('mediaSession' in navigator)) return;
+            navigator.mediaSession.setActionHandler('play', () => {
+                if (audioActualPrincipal) audioActualPrincipal.play().catch(() => { });
+            });
+            navigator.mediaSession.setActionHandler('pause', () => {
+                if (audioActualPrincipal) audioActualPrincipal.pause();
+            });
+            navigator.mediaSession.setActionHandler('previoustrack', () => cambiarCancion(-1));
+            navigator.mediaSession.setActionHandler('nexttrack', () => cambiarCancion(1));
+            navigator.mediaSession.setActionHandler('stop', () => {
+                if (audioActualPrincipal) { audioActualPrincipal.pause(); audioActualPrincipal.currentTime = 0; }
+            });
+        }
+        registrarControlesMediaSession();
+
         function reproducirCancionIndex(index) {
-            const audiosList = document.querySelectorAll('audio');
-            if (index < 0 || index >= audiosList.length) return;
+            if (index < 0 || index >= audiosListaEstable.length) return;
             cancionActualIndex = index;
-            const audio = audiosList[index];
+            const audio = audiosListaEstable[index];
+            // Forzar precarga si estaba en "none" para que no falle en background
+            if (audio.preload === 'none') { audio.preload = 'auto'; audio.load(); }
             detenerTodo(audio);
-            audio.play().catch(e => console.log("Bloqueado por autoplay:", e));
+            const playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(e => {
+                    console.log("Autoplay bloqueado, reintentando en 300ms:", e);
+                    setTimeout(() => audio.play().catch(() => { }), 300);
+                });
+            }
         }
 
         function cambiarCancion(dir) {
-            const audiosList = document.querySelectorAll('audio');
-            if (cancionActualIndex === -1 && audiosList.length > 0) {
+            if (cancionActualIndex === -1 && audiosListaEstable.length > 0) {
                 reproducirCancionIndex(0);
                 return;
             }
             let newIndex = cancionActualIndex + dir;
-            if (newIndex >= audiosList.length) newIndex = 0;
-            if (newIndex < 0) newIndex = audiosList.length - 1;
+            if (newIndex >= audiosListaEstable.length) newIndex = 0;
+            if (newIndex < 0) newIndex = audiosListaEstable.length - 1;
             reproducirCancionIndex(newIndex);
         }
 
         function togglePlayPausePrincipal() {
-            const audiosList = document.querySelectorAll('audio');
-            if (cancionActualIndex === -1 && audiosList.length > 0) {
+            if (cancionActualIndex === -1 && audiosListaEstable.length > 0) {
                 reproducirCancionIndex(0);
                 return;
             }
@@ -3016,8 +3055,8 @@
             audio.addEventListener('play', (e) => {
                 detenerTodo(e.target);
 
-                // Actualizar estado reproductor principal
-                cancionActualIndex = Array.from(audiosList).indexOf(e.target);
+                // Usar la lista ESTABLE para el índice (no el DOM que se puede reordenar)
+                cancionActualIndex = audiosListaEstable.indexOf(e.target);
                 audioActualPrincipal = e.target;
 
                 const rep = e.target.closest('.reproductor');
@@ -3027,17 +3066,15 @@
                 }
                 if (btnPlayPause) btnPlayPause.innerHTML = "&#10074;&#10074;";
 
+                // Actualizar pantalla bloqueada / notificación del móvil
+                if (nomCancion) actualizarMediaSession(nomCancion.textContent);
+
                 // Pausar video de YouTube usando la API explícitamente
                 if (window.ytPlayer && window.ytPlayer.pauseVideo) {
-                    try {
-                        window.ytPlayer.pauseVideo();
-                    } catch (error) {
-                        console.warn("Error al intentar pausar YouTube:", error);
-                    }
+                    try { window.ytPlayer.pauseVideo(); } catch (err) { console.warn(err); }
                 }
 
                 iniciarVisualizador(e.target);
-                // Añadir resaltado a la canción que empieza a sonar
                 const parent = e.target.closest('.reproductor');
                 if (parent) parent.classList.add('resaltado');
             });
@@ -3046,12 +3083,16 @@
                 if (audioActualPrincipal === e.target && btnPlayPause) {
                     btnPlayPause.innerHTML = "&#9654;&#xFE0E;";
                 }
-                // Quitar resaltado al pausar
+                if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
                 const parent = e.target.closest('.reproductor');
                 if (parent) parent.classList.remove('resaltado');
             });
 
-            audio.addEventListener('ended', () => {
+            // AUTO-SIGUIENTE: cuando termina una canción, la siguiente comienza automáticamente.
+            // Funciona aunque el teléfono esté bloqueado o en otra app, gracias a MediaSession.
+            audio.addEventListener('ended', (e) => {
+                const idxEstable = audiosListaEstable.indexOf(e.target);
+                if (idxEstable !== -1) cancionActualIndex = idxEstable;
                 cambiarCancion(1);
             });
         });
