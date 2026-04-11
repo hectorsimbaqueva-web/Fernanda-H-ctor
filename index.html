@@ -134,7 +134,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             z-index: 1;
-            text-shadow: 0 0 10px var(--acento-neon-azul);
             display: block;
             width: 100%;
             word-wrap: break-word;
@@ -289,9 +288,9 @@
             margin-top: 80px;
             padding: 40px 20px;
             border-top: 1px solid var(--kitty-pink-soft);
-            color: var(--kitty-pink-bold);
-            text-shadow: 0 0 7px var(--kitty-white), 0 0 10px var(--kitty-white);
+            color: #ffffff;
             font-weight: 700;
+            text-shadow: 0 0 10px var(--acento-neon-azul), 0 0 20px var(--acento-neon-azul), 0 0 30px var(--acento-neon-azul);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -300,7 +299,6 @@
 
         .footer-texto {
             display: inline-block;
-            animation: olaNeon 8s ease-in-out infinite;
             font-size: clamp(1rem, 4vw, 1.4rem);
             max-width: 90vw;
             line-height: 1.4;
@@ -725,7 +723,6 @@
 
         .reproductor.resaltado .nombre-cancion {
             color: var(--acento-neon-azul);
-            text-shadow: 0 0 15px var(--acento-neon-azul);
         }
 
         .reproductor.resaltado::after {
@@ -796,12 +793,10 @@
             color: var(--acento-neon-azul);
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 15px var(--acento-neon-azul);
             display: block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            animation: pulsoTexto 2s infinite alternate;
         }
 
         @keyframes pulsoTexto {
@@ -897,7 +892,6 @@
             gap: 10px;
             font-size: 0.9rem;
             color: var(--acento-neon-azul);
-            text-shadow: 0 0 5px rgba(0, 200, 255, 0.3);
         }
 
         .sugerencia-item:last-child {
@@ -958,7 +952,6 @@
             border: 3px solid var(--kitty-pink);
             filter: drop-shadow(0 0 10px var(--kitty-pink));
             pointer-events: none;
-            animation: flotarKitty 4s ease-in-out infinite;
         }
 
         .esquina-top-left {
@@ -1026,16 +1019,15 @@
         }
 
         .video-independiente-titulo {
-            color: #fff;
+            color: #ffffff;
             font-family: 'Bubblegum Sans', cursive;
             font-size: clamp(1.5rem, 5vw, 2.5rem);
             margin-bottom: 25px;
-            text-shadow: 0 0 10px var(--kitty-pink);
+            text-shadow: 0 0 10px var(--acento-neon-azul), 0 0 20px var(--acento-neon-azul), 0 0 30px var(--acento-neon-azul);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 15px;
-            animation: bucleColores 4s infinite alternate ease-in-out;
         }
 
         .video-input-wrapper {
