@@ -290,7 +290,7 @@
             border-top: 1px solid var(--kitty-pink-soft);
             color: #ffffff;
             font-weight: 700;
-            text-shadow: 0 0 10px var(--acento-neon-azul), 0 0 20px var(--acento-neon-azul), 0 0 30px var(--acento-neon-azul);
+            text-shadow: 0 0 10px var(--kitty-pink), 0 0 20px var(--kitty-pink), 0 0 30px var(--kitty-pink);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -841,6 +841,8 @@
             justify-content: center;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
 
         .btn-control:hover {
@@ -1353,10 +1355,12 @@
                 <canvas id="visualizador-principal" class="visualizador-principal"></canvas>
                 <!-- Controles Principales -->
                 <div class="controles-principales">
-                    <button id="btn-prev" class="btn-control" title="Anterior" onclick="cambiarCancion(-1)">⏮</button>
+                    <button id="btn-prev" class="btn-control" title="Anterior"
+                        onclick="cambiarCancion(-1)">&#9198;&#xFE0E;</button>
                     <button id="btn-play-pause" class="btn-control play-btn" title="Reproducir/Pausar"
-                        onclick="togglePlayPausePrincipal()">▶️</button>
-                    <button id="btn-next" class="btn-control" title="Siguiente" onclick="cambiarCancion(1)">⏭</button>
+                        onclick="togglePlayPausePrincipal()">&#9654;&#xFE0E;</button>
+                    <button id="btn-next" class="btn-control" title="Siguiente"
+                        onclick="cambiarCancion(1)">&#9197;&#xFE0E;</button>
                 </div>
             </div>
 
@@ -2637,8 +2641,8 @@
         </div>
 
         <footer>
-            <span class="footer-texto"><span class="corazon-palpitante">💗</span>HECHO CON TODO MI AMOR PARA TI, MI
-                PRINCESITA HERMOSA. TE QUIERO MUCHO.<span class="corazon-palpitante">💗</span></span>
+            <span class="footer-texto"><span>💗</span>HECHO CON TODO MI AMOR PARA TI, MI
+                PRINCESITA HERMOSA. TE QUIERO MUCHO.<span>💗</span></span>
         </footer>
     </div>
 
@@ -2993,7 +2997,7 @@
                 if (textoCancionActual && nomCancion) {
                     textoCancionActual.textContent = nomCancion.textContent.toUpperCase();
                 }
-                if (btnPlayPause) btnPlayPause.textContent = "⏸";
+                if (btnPlayPause) btnPlayPause.innerHTML = "&#10074;&#10074;";
 
                 // Pausar video de YouTube usando la API explícitamente
                 if (window.ytPlayer && window.ytPlayer.pauseVideo) {
@@ -3012,7 +3016,7 @@
 
             audio.addEventListener('pause', (e) => {
                 if (audioActualPrincipal === e.target && btnPlayPause) {
-                    btnPlayPause.textContent = "▶️";
+                    btnPlayPause.innerHTML = "&#9654;&#xFE0E;";
                 }
                 // Quitar resaltado al pausar
                 const parent = e.target.closest('.reproductor');
