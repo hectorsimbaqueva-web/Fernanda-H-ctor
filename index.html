@@ -186,8 +186,33 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            margin-bottom: 60px;
+            margin-bottom: 20px;
             width: 100%;
+            max-height: 550px;
+            /* Límite para mostrar aproximadamente 3 filas altas (3x3 grid) */
+            overflow-y: auto;
+            padding-right: 15px;
+            /* Espacio para el scrollbar */
+        }
+
+        /* Ocultar overflow global para evitar dobles barras en ciertas pantallas,
+           crear una barra de desplazamiento neón dedicada para el reproductor */
+        .musica-galeria::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .musica-galeria::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .musica-galeria::-webkit-scrollbar-thumb {
+            background: var(--kitty-pink);
+            border-radius: 10px;
+        }
+
+        .musica-galeria::-webkit-scrollbar-thumb:hover {
+            background: var(--acento-neon-azul);
         }
 
         @media (max-width: 900px) {
@@ -1136,13 +1161,6 @@
         <h1><span class="corazon-palpitante">💗</span> Fernanda & Héctor <span class="corazon-palpitante">💗</span></h1>
         <span class="fecha">12/Octubre/2025</span>
 
-        <div class="buscador-container">
-            <input type="text" id="input-busqueda" class="buscador-input"
-                placeholder="¿Qué canción quiere escuchar mi princesa?" autocomplete="off">
-            <button id="btn-buscar" class="buscador-btn">🔍 Buscar</button>
-            <div id="lista-sugerencias" class="sugerencias-container"></div>
-        </div>
-
 
         <!-- SECCIÓN: REPRODUCTOR DE VIDEO INDEPENDIENTE -->
         <section class="video-independiente-section">
@@ -1168,719 +1186,1209 @@
             <div id="youtube-results-container" class="youtube-results-grid"></div>
         </section>
 
-        <div class="musica-galeria">
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Binomio De Oro De América - Cómo Expresar Lo Que Siento</span>
-                    <audio controls>
-                        <source src="./Binomio De Oro De América - Cómo Expresar Lo Que Siento.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Maná - En El Muelle De San Blás</span>
-                    <audio controls>
-                        <source src="./Maná - En El Muelle De San Blás.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Mago de oz - El Vals De Las Almas Rotas</span>
-                    <audio controls>
-                        <source src="./Mago de oz - El Vals De Las Almas Rotas.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Mago de oz - La Costa Del Silencio</span>
-                    <audio controls>
-                        <source src="./Mago de oz - La Costa Del Silencio.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Mago de oz - El Cantar de la Luna Oscura</span>
-                    <audio controls>
-                        <source src="./Mago de oz - El Cantar de la Luna Oscura.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Enanitos Verdes - Tu cárcel</span>
-                    <audio controls>
-                        <source src="./Enanitos Verdes - Tu cárcel.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Fernando Burbano - Tu Amor o Tu Enemigo</span>
-                    <audio controls>
-                        <source src="./Fernando Burbano - Tu Amor o Tu Enemigo.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Romeo Santos - Necio</span>
-                    <audio controls>
-                        <source src="./Romeo Santos - Necio.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Romeo Santos - Obsesión</span>
-                    <audio controls>
-                        <source src="./Romeo Santos - Obsesión.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Romeo Santos - Propuesta Indecente</span>
-                    <audio controls>
-                        <source src="./Romeo Santos - Propuesta Indecente.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Romeo Santos - Eres Mia</span>
-                    <audio controls>
-                        <source src="./Romeo Santos - Eres Mia.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Romeo Santos - Héroe Favorito</span>
-                    <audio controls>
-                        <source src="./Romeo Santos - Héroe Favorito.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Romeo Santos - Cancioncitas de Amor</span>
-                    <audio controls>
-                        <source src="./Romeo Santos   Cancioncitas de Amor.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Andrés Cepeda - Dia Tras Dia</span>
-                    <audio controls>
-                        <source src="./Andrés Cepeda - Dia Tras Dia.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Subcantante - Loquito Por Ti</span>
-                    <audio controls>
-                        <source src="./Subcantante - Loquito Por Ti.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 SubCantante - Todo De Cabeza</span>
-                    <audio controls>
-                        <source src="./SubCantante - Todo De Cabeza.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Rio Roma - Tú me cambiaste la vida</span>
-                    <audio controls>
-                        <source src="./Rio Roma - Tú me cambiaste la vida.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Sin Bandera - Te vi Venir</span>
-                    <audio controls>
-                        <source src="./Sin Bandera - Te vi Venir.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Marc Anthony - Flor Pálida</span>
-                    <audio controls>
-                        <source src="./Marc Anthony - Flor Pálida.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Rio Roma - Mi Persona Favorita</span>
-                    <audio controls>
-                        <source src="./Rio Roma - Mi Persona Favorita.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 La Oreja de Van Gogh - Rosas</span>
-                    <audio controls>
-                        <source src="./La Oreja de Van Gogh - Rosas.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Bacilos Morat - Tabaco y Chanel</span>
-                    <audio controls>
-                        <source src="./Bacilos Morat - Tabaco y Chanel.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Aaron Montalvo - Mi Corazon encantado</span>
-                    <audio controls>
-                        <source src="./Aaron Montalvo - Mi Corazon encantado.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Peter Manjarrés - Tragao de ti</span>
-                    <audio controls>
-                        <source src="./Peter Manjarrés - Tragao de ti .mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Luis Mateus - Quiéreme</span>
-                    <audio controls>
-                        <source src="./Luis Mateus - Quiéreme.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Miguel Morales - Mi Diosa Humana</span>
-                    <audio controls>
-                        <source src="./Miguel Morales - Mi Diosa Humana.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Luis Mateus - Escúchame</span>
-                    <audio controls>
-                        <source src="./Luis Mateus - Escúchame.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Luis Mateus - Muero Por Verla</span>
-                    <audio controls>
-                        <source src="./Luis Mateus - Muero Por Verla.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Luis Mateus - No Quiero Perderte</span>
-                    <audio controls>
-                        <source src="./Luis Mateus - No Quiero Perderte.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Luis Mateus - Buscandola</span>
-                    <audio controls>
-                        <source src="./Luis Mateus - Buscandola.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Luis Mateus - Confundido</span>
-                    <audio controls>
-                        <source src="./Luis Mateus - Confundido.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Los Inquietos Del Vallenato - Recuérdame</span>
-                    <audio controls>
-                        <source src="./Los Inquietos Del Vallenato - Recuérdame.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Los Inquietos Del Vallenato - Después de Ti</span>
-                    <audio controls>
-                        <source src="./Los Inquietos Del Vallenato - Después de Ti.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Los Diablitos - Si No Me Falla El Corazón</span>
-                    <audio controls>
-                        <source src="./Los Diablitos - Si No Me Falla El Corazón.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Jorge Celedon - No Podran Separarnos</span>
-                    <audio controls>
-                        <source src="./Jorge Celedon - No Podran Separarnos.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Felipe Pelaez - El Amor Mas Grande Del Planeta</span>
-                    <audio controls>
-                        <source src="./Felipe Pelaez - El Amor Mas Grande Del Planeta.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Binomio De Oro De América - Si Tu Amor No Vuelve</span>
-                    <audio controls>
-                        <source src="./Binomio De Oro De América - Si Tu Amor No Vuelve.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Binomio De Oro De América - Manantial De Amor</span>
-                    <audio controls>
-                        <source src="./Binomio De Oro De América - Manantial De Amor.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Binomio De Oro De América - Grafiti De Amor</span>
-                    <audio controls>
-                        <source src="./Binomio De Oro De América - Grafiti De Amor.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Algo Que Se Quede - Grupo Niche</span>
-                    <audio controls>
-                        <source src="./Algo Que Se Quede - Grupo Niche.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Chayanne - Yo Te Amo</span>
-                    <audio controls>
-                        <source src="./Chayanne - Yo Te Amo.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Carla Morrison - Te regalo</span>
-                    <audio controls>
-                        <source src="./Carla Morrison - Te regalo.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Coldplay Sparks</span>
-                    <audio controls>
-                        <source src="./Coldplay Sparks.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Yoel & Dla - Enamorado</span>
-                    <audio controls>
-                        <source src="./Yoel & Dla - Estoy Enamorado Yo de Ti.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 RBD - Este Corazón</span>
-                    <audio controls>
-                        <source src="./RBD - Este Corazón.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Lefty SM - Que Bonita</span>
-                    <audio controls>
-                        <source src="./Lefty SM - Que Bonita.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Erick Fornaris - Te Amo</span>
-                    <audio controls>
-                        <source src="./Erick Fornaris - Te Amo.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Cnco - Quisiera</span>
-                    <audio controls>
-                        <source src="./Cnco - Quisiera.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Cnco - Tan Fácil</span>
-                    <audio controls>
-                        <source src="./Cnco - Tan Fácil.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Cnco - Para Enamorarte</span>
-                    <audio controls>
-                        <source src="./Cnco - Para Enamorarte.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Santy G - Amor a Distancia</span>
-                    <audio controls>
-                        <source src="./Santy G - Amor a Distancia.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Pipe Bueno - Si Yo Fuera Ladrón</span>
-                    <audio controls>
-                        <source src="./Pipe Bueno - Si Yo Fuera Ladrón.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Carlos Vives - Volví a Nacer</span>
-                    <audio controls>
-                        <source src="./Carlos Vives - Volví a Nacer.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Alex Campos - Tu Poeta</span>
-                    <audio controls>
-                        <source src="./Alex Campos - Tu Poeta.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Chino y Nacho - El poeta</span>
-                    <audio controls>
-                        <source src="./Chino y Nacho - El poeta.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Galante El Emperador - Un Mundo Contigo</span>
-                    <audio controls>
-                        <source src="./Galante El Emperador - Un Mundo Contigo.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Galante El Emperador - Aunque El Mundo Cambie</span>
-                    <audio controls>
-                        <source src="./Galante El Emperador - Aunque El Mundo Cambie.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Reik - Me Niego</span>
-                    <audio controls>
-                        <source src="./Reik - Me Niego.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Almas De Barrio - Quédate</span>
-                    <audio controls>
-                        <source src="./Almas De Barrio - Quédate.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Almas De Barrio - Tan Solo Vamos</span>
-                    <audio controls>
-                        <source src="./Almas De Barrio - Tan Solo Vamos.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Almas De Barrio - Déjame</span>
-                    <audio controls>
-                        <source src="./Almas De Barrio - Déjame.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Afaz Natural - Deseo Saber</span>
-                    <audio controls>
-                        <source src="./Afaz Natural - Deseo Saber.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Pipe Bueno - Dueño de ti</span>
-                    <audio controls>
-                        <source src="./Pipe Bueno - Dueño de ti.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Jhonny Rivera - Te Doy Mi Vida</span>
-                    <audio controls>
-                        <source src="./Jhonny Rivera - Te Doy Mi Vida.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Jhonny Rivera - Como Me Gustas</span>
-                    <audio controls>
-                        <source src="./Jhonny Rivera - Como Me Gustas.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Fernando Burbano - Mi Novia</span>
-                    <audio controls>
-                        <source src="./Fernando Burbano - Mi Novia.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Christian Daniel - Ahora Que Te Vas</span>
-                    <audio controls>
-                        <source src="./Christian Daniel - Ahora Que Te Vas.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Sebastián Yatra - Un Año</span>
-                    <audio controls>
-                        <source src="./Sebastián Yatra - Un Año.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Sebastián Yatra - Quiero Decirte</span>
-                    <audio controls>
-                        <source src="./Sebastián Yatra - Quiero Decirte.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Nigga - Sin Tu Amor</span>
-                    <audio controls>
-                        <source src="./Nigga - Sin Tu Amor.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Nigga - Te Amo Tanto</span>
-                    <audio controls>
-                        <source src="./Nigga - Te Amo Tanto.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Nigga - Te quiero</span>
-                    <audio controls>
-                        <source src="./Nigga - Te quiero.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Nigga - Luna</span>
-                    <audio controls>
-                        <source src="./Nigga - Luna.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Nigga - En Este Mundo No Seria Feliz</span>
-                    <audio controls>
-                        <source src="./Nigga -  En Este Mundo No Seria Feliz.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Galante El Emperador - Un Ratito Mas</span>
-                    <audio controls>
-                        <source src="./Galante El Emperador - Un Ratito Mas.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Galante El Emperador - Besame</span>
-                    <audio controls>
-                        <source src="./Galante El Emperador - Besame.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Dread Mar I - Días de sol Nublados</span>
-                    <audio controls>
-                        <source src="./Dread Mar I - Días de sol Nublados.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
-
-            <div class="reproductor-container">
-                <div class="reproductor">
-                    <span class="nombre-cancion">🎵 Cali y El Dandee - Yo Te Esperaré</span>
-                    <audio controls>
-                        <source src="./Cali y El Dandee - Yo Te Esperaré.mp3" type="audio/mpeg">
-                    </audio>
-                </div>
-            </div>
+        <!-- SECCIÓN: REPRODUCTOR DE MÚSICA -->
+        <section class="video-independiente-section" style="max-width: 1200px;">
+            <h2 class="video-independiente-titulo">🎧 Reproductor de Música</h2>
+
+            <div class="buscador-container" style="margin: 0 auto 40px;">
+                <input type="text" id="input-busqueda" class="buscador-input"
+                    placeholder="¿Qué canción quiere escuchar mi princesa?" autocomplete="off">
+                <button id="btn-buscar" class="buscador-btn">🔍 Buscar</button>
+                <div id="lista-sugerencias" class="sugerencias-container"></div>
+            </div>
+
+            <div class="musica-galeria">
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Fuerza Regida - Por esos ojos</span>
+                        <audio controls preload="none">
+                            <source src="./Fuerza Regida - Por esos ojos.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Joe Cuba - Mujer Divina</span>
+                        <audio controls preload="none">
+                            <source src="./Joe Cuba - Mujer Divina.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Yan Block Panda Black - 444</span>
+                        <audio controls preload="none">
+                            <source src="./Yan Block Panda Black - 444.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 The Verve - Bitter Sweet Symphony</span>
+                        <audio controls preload="none">
+                            <source src="./The Verve - Bitter Sweet Symphony.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Tears For Fears - Everybody Wants To Rule The World</span>
+                        <audio controls preload="none">
+                            <source src="./Tears For Fears - Everybody Wants To Rule The World.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Josean Log - Doma</span>
+                        <audio controls preload="none">
+                            <source src="./Josean Log - Doma.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Julieta Venegas - Eres para mí</span>
+                        <audio controls preload="none">
+                            <source src="./Julieta Venegas - Eres para mí.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Wicked Game</span>
+                        <audio controls preload="none">
+                            <source src="./Wicked Game.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Rauw Alejandro - Todo de Ti</span>
+                        <audio controls preload="none">
+                            <source src="./Rauw Alejandro - Todo de Ti.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Dalmata - Pasarela</span>
+                        <audio controls preload="none">
+                            <source src="./Dalmata - Pasarela.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
 
-        </div>
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Los Adolescentes - Virgen</span>
+                        <audio controls preload="none">
+                            <source src="./Los Adolescentes - Virgen.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Juan Luis Guerra - Vale la Pena</span>
+                        <audio controls preload="none">
+                            <source src="./Juan Luis Guerra - Vale la Pena.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Strawberry Guy - Mrs Magic</span>
+                        <audio controls preload="none">
+                            <source src="./Strawberry Guy - Mrs Magic.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Grupo Niche - Sin Sentimiento</span>
+                        <audio controls preload="none">
+                            <source src="./Grupo Niche - Sin Sentimiento.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Kali Uchis Peso Pluma - Igual Que Un Ángel</span>
+                        <audio controls preload="none">
+                            <source src="./Kali Uchis Peso Pluma - Igual Que Un Ángel.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Jósean Log - Beso</span>
+                        <audio controls preload="none">
+                            <source src="./Jósean Log - Beso.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Crack Family - Las Tetas de mi madre</span>
+                        <audio controls preload="none">
+                            <source src="./Crack Family - Las Tetas de mi madre.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Canserbero - De la vida como película</span>
+                        <audio controls preload="none">
+                            <source src="./Canserbero - De la vida como película.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Afaz Natural - Quizás</span>
+                        <audio controls preload="none">
+                            <source src="./Afaz Natural - Quizás.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Manuel Turizo - Una Lady Como Tù</span>
+                        <audio controls preload="none">
+                            <source src="./Manuel Turizo - Una Lady Como Tù.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Danny Ocean - Me Rehúso</span>
+                        <audio controls preload="none">
+                            <source src="./Danny Ocean - Me Rehúso.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Kaleth Morales - Todo de Cabeza</span>
+                        <audio controls preload="none">
+                            <source src="./Kaleth Morales - Todo de Cabeza.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Enanitos Verdes - Lamento Boliviano</span>
+                        <audio controls preload="none">
+                            <source src="./Enanitos Verdes - Lamento Boliviano.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Chalino Sanchez - Alma Enamorada</span>
+                        <audio controls preload="none">
+                            <source src="./Chalino Sanchez - Alma Enamorada.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Andres Cepeda - Tengo Ganas</span>
+                        <audio controls preload="none">
+                            <source src="./Andres Cepeda  - Tengo Ganas.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Juanes - Es Por Ti</span>
+                        <audio controls preload="none">
+                            <source src="./Juanes - Es Por Ti.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Manuel Medrano - Bajo El Agua</span>
+                        <audio controls preload="none">
+                            <source src="./Manuel Medrano - Bajo El Agua.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Andrés Cepeda - Lo mejor que hay en mi vida</span>
+                        <audio controls preload="none">
+                            <source src="./Andrés Cepeda - Lo mejor que hay en mi vida.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Feid - Le Pido a DIOS</span>
+                        <audio controls preload="none">
+                            <source src="./Feid - Le Pido a DIOS.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 The Walters -- I Love You So</span>
+                        <audio controls preload="none">
+                            <source src="./The Walters -- I Love You So.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 El Cuarteto de Nos - Enamorado tuyo</span>
+                        <audio controls preload="none">
+                            <source src="./El Cuarteto de Nos - Enamorado tuyo.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Art Deco</span>
+                        <audio controls preload="none">
+                            <source src="./Art Deco.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Manuel Turizo - Déjala Que Vuelva</span>
+                        <audio controls preload="none">
+                            <source src="./Manuel Turizo - Déjala Que Vuelva.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Don Omar - Dutty Love</span>
+                        <audio controls preload="none">
+                            <source src="./Don Omar - Dutty Love.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 De La Ghetto - Tu Te Imaginas</span>
+                        <audio controls preload="none">
+                            <source src="./De La Ghetto - Tu Te Imaginas.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Josean Log - Chachachá</span>
+                        <audio controls preload="none">
+                            <source src="./Josean Log - Chachachá.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Nanpa Básico - Nunca tuve tanto</span>
+                        <audio controls preload="none">
+                            <source src="./Nanpa Básico - Nunca tuve tanto.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Penyair - Mujer Sin Nombre</span>
+                        <audio controls preload="none">
+                            <source src="./Penyair - Mujer Sin Nombre.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Grupo Frontera - Coqueta</span>
+                        <audio controls preload="none">
+                            <source src="./Grupo Frontera - Coqueta.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Laidy - Rosa de Barro</span>
+                        <audio controls preload="none">
+                            <source src="./Laidy - Rosa de Barro.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Laidy - Brindo por Ellos</span>
+                        <audio controls preload="none">
+                            <source src="./Laidy - Brindo por Ellos.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Bad Bunny - Baile Inolvidable</span>
+                        <audio controls preload="none">
+                            <source src="./Bad Bunny - Baile Inolvidable.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 See You Again - Tyler The CreatorKali Uchis</span>
+                        <audio controls preload="none">
+                            <source src="./See You Again - Tyler The CreatorKali Uchis.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Yeri Mua - El Bogueto</span>
+                        <audio controls preload="none">
+                            <source src="./Yeri Mua - El Bogueto.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Mark Ronson - Uptown Funk</span>
+                        <audio controls preload="none">
+                            <source src="./Mark Ronson - Uptown Funk.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Blue Hair - TV Girl</span>
+                        <audio controls preload="none">
+                            <source src="./Blue Hair · TV Girl.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Manuel Medrano - Una y otra vez</span>
+                        <audio controls preload="none">
+                            <source src="./Manuel Medrano - Una y otra vez.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Thought - Saw Your Face Today</span>
+                        <audio controls preload="none">
+                            <source src="./Thought - Saw Your Face Today.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Arctic Monkeys - 505</span>
+                        <audio controls preload="none">
+                            <source src="./Arctic Monkeys - 505.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Kali Uchis - Moonlight</span>
+                        <audio controls preload="none">
+                            <source src="./Kali Uchis - Moonlight.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Jarabe De Palo - La flaca</span>
+                        <audio controls preload="none">
+                            <source src="./Jarabe De Palo - La flaca.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Coldplay - Sparks</span>
+                        <audio controls preload="none">
+                            <source src="./Coldplay - Sparks.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Coldplay - Yellow</span>
+                        <audio controls preload="none">
+                            <source src="./Coldplay - Yellow.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Binomio De Oro De América - Cómo Expresar Lo Que Siento</span>
+                        <audio controls preload="none">
+                            <source src="./Binomio De Oro De América - Cómo Expresar Lo Que Siento.mp3"
+                                type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Maná - En El Muelle De San Blás</span>
+                        <audio controls preload="none">
+                            <source src="./Maná - En El Muelle De San Blás.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Mago de oz - El Vals De Las Almas Rotas</span>
+                        <audio controls preload="none">
+                            <source src="./Mago de oz - El Vals De Las Almas Rotas.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Mago de oz - La Costa Del Silencio</span>
+                        <audio controls preload="none">
+                            <source src="./Mago de oz - La Costa Del Silencio.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Mago de oz - El Cantar de la Luna Oscura</span>
+                        <audio controls preload="none">
+                            <source src="./Mago de oz - El Cantar de la Luna Oscura.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Enanitos Verdes - Tu cárcel</span>
+                        <audio controls preload="none">
+                            <source src="./Enanitos Verdes - Tu cárcel.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Fernando Burbano - Tu Amor o Tu Enemigo</span>
+                        <audio controls preload="none">
+                            <source src="./Fernando Burbano - Tu Amor o Tu Enemigo.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Romeo Santos - Necio</span>
+                        <audio controls preload="none">
+                            <source src="./Romeo Santos - Necio.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Romeo Santos - Obsesión</span>
+                        <audio controls preload="none">
+                            <source src="./Romeo Santos - Obsesión.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Romeo Santos - Propuesta Indecente</span>
+                        <audio controls preload="none">
+                            <source src="./Romeo Santos - Propuesta Indecente.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Romeo Santos - Eres Mia</span>
+                        <audio controls preload="none">
+                            <source src="./Romeo Santos - Eres Mia.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Romeo Santos - Héroe Favorito</span>
+                        <audio controls preload="none">
+                            <source src="./Romeo Santos - Héroe Favorito.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Romeo Santos - Cancioncitas de Amor</span>
+                        <audio controls preload="none">
+                            <source src="./Romeo Santos   Cancioncitas de Amor.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Andrés Cepeda - Dia Tras Dia</span>
+                        <audio controls preload="none">
+                            <source src="./Andrés Cepeda - Dia Tras Dia.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Subcantante - Loquito Por Ti</span>
+                        <audio controls preload="none">
+                            <source src="./Subcantante - Loquito Por Ti.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 SubCantante - Todo De Cabeza</span>
+                        <audio controls preload="none">
+                            <source src="./SubCantante - Todo De Cabeza.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Rio Roma - Tú me cambiaste la vida</span>
+                        <audio controls preload="none">
+                            <source src="./Rio Roma - Tú me cambiaste la vida.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Sin Bandera - Te vi Venir</span>
+                        <audio controls preload="none">
+                            <source src="./Sin Bandera - Te vi Venir.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Marc Anthony - Flor Pálida</span>
+                        <audio controls preload="none">
+                            <source src="./Marc Anthony - Flor Pálida.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Rio Roma - Mi Persona Favorita</span>
+                        <audio controls preload="none">
+                            <source src="./Rio Roma - Mi Persona Favorita.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 La Oreja de Van Gogh - Rosas</span>
+                        <audio controls preload="none">
+                            <source src="./La Oreja de Van Gogh - Rosas.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Bacilos Morat - Tabaco y Chanel</span>
+                        <audio controls preload="none">
+                            <source src="./Bacilos Morat - Tabaco y Chanel.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Aaron Montalvo - Mi Corazon encantado</span>
+                        <audio controls preload="none">
+                            <source src="./Aaron Montalvo - Mi Corazon encantado.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Peter Manjarrés - Tragao de ti</span>
+                        <audio controls preload="none">
+                            <source src="./Peter Manjarrés - Tragao de ti .mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Luis Mateus - Quiéreme</span>
+                        <audio controls preload="none">
+                            <source src="./Luis Mateus - Quiéreme.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Miguel Morales - Mi Diosa Humana</span>
+                        <audio controls preload="none">
+                            <source src="./Miguel Morales - Mi Diosa Humana.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Luis Mateus - Escúchame</span>
+                        <audio controls preload="none">
+                            <source src="./Luis Mateus - Escúchame.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Luis Mateus - Muero Por Verla</span>
+                        <audio controls preload="none">
+                            <source src="./Luis Mateus - Muero Por Verla.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Luis Mateus - No Quiero Perderte</span>
+                        <audio controls preload="none">
+                            <source src="./Luis Mateus - No Quiero Perderte.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Luis Mateus - Buscandola</span>
+                        <audio controls preload="none">
+                            <source src="./Luis Mateus - Buscandola.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Luis Mateus - Confundido</span>
+                        <audio controls preload="none">
+                            <source src="./Luis Mateus - Confundido.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Los Inquietos Del Vallenato - Recuérdame</span>
+                        <audio controls preload="none">
+                            <source src="./Los Inquietos Del Vallenato - Recuérdame.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Los Inquietos Del Vallenato - Después de Ti</span>
+                        <audio controls preload="none">
+                            <source src="./Los Inquietos Del Vallenato - Después de Ti.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Los Diablitos - Si No Me Falla El Corazón</span>
+                        <audio controls preload="none">
+                            <source src="./Los Diablitos - Si No Me Falla El Corazón.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Jorge Celedon - No Podran Separarnos</span>
+                        <audio controls preload="none">
+                            <source src="./Jorge Celedon - No Podran Separarnos.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Felipe Pelaez - El Amor Mas Grande Del Planeta</span>
+                        <audio controls preload="none">
+                            <source src="./Felipe Pelaez - El Amor Mas Grande Del Planeta.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Binomio De Oro De América - Si Tu Amor No Vuelve</span>
+                        <audio controls preload="none">
+                            <source src="./Binomio De Oro De América - Si Tu Amor No Vuelve.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Binomio De Oro De América - Manantial De Amor</span>
+                        <audio controls preload="none">
+                            <source src="./Binomio De Oro De América - Manantial De Amor.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Binomio De Oro De América - Grafiti De Amor</span>
+                        <audio controls preload="none">
+                            <source src="./Binomio De Oro De América - Grafiti De Amor.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Algo Que Se Quede - Grupo Niche</span>
+                        <audio controls preload="none">
+                            <source src="./Algo Que Se Quede - Grupo Niche.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Chayanne - Yo Te Amo</span>
+                        <audio controls preload="none">
+                            <source src="./Chayanne - Yo Te Amo.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Carla Morrison - Te regalo</span>
+                        <audio controls preload="none">
+                            <source src="./Carla Morrison - Te regalo.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Coldplay Sparks</span>
+                        <audio controls preload="none">
+                            <source src="./Coldplay Sparks.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Yoel & Dla - Enamorado</span>
+                        <audio controls preload="none">
+                            <source src="./Yoel & Dla - Estoy Enamorado Yo de Ti.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 RBD - Este Corazón</span>
+                        <audio controls preload="none">
+                            <source src="./RBD - Este Corazón.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Lefty SM - Que Bonita</span>
+                        <audio controls preload="none">
+                            <source src="./Lefty SM - Que Bonita.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Erick Fornaris - Te Amo</span>
+                        <audio controls preload="none">
+                            <source src="./Erick Fornaris - Te Amo.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Cnco - Quisiera</span>
+                        <audio controls preload="none">
+                            <source src="./Cnco - Quisiera.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Cnco - Tan Fácil</span>
+                        <audio controls preload="none">
+                            <source src="./Cnco - Tan Fácil.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Cnco - Para Enamorarte</span>
+                        <audio controls preload="none">
+                            <source src="./Cnco - Para Enamorarte.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Santy G - Amor a Distancia</span>
+                        <audio controls preload="none">
+                            <source src="./Santy G - Amor a Distancia.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Pipe Bueno - Si Yo Fuera Ladrón</span>
+                        <audio controls preload="none">
+                            <source src="./Pipe Bueno - Si Yo Fuera Ladrón.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Carlos Vives - Volví a Nacer</span>
+                        <audio controls preload="none">
+                            <source src="./Carlos Vives - Volví a Nacer.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Alex Campos - Tu Poeta</span>
+                        <audio controls preload="none">
+                            <source src="./Alex Campos - Tu Poeta.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Chino y Nacho - El poeta</span>
+                        <audio controls preload="none">
+                            <source src="./Chino y Nacho - El poeta.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Galante El Emperador - Un Mundo Contigo</span>
+                        <audio controls preload="none">
+                            <source src="./Galante El Emperador - Un Mundo Contigo.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Galante El Emperador - Aunque El Mundo Cambie</span>
+                        <audio controls preload="none">
+                            <source src="./Galante El Emperador - Aunque El Mundo Cambie.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Reik - Me Niego</span>
+                        <audio controls preload="none">
+                            <source src="./Reik - Me Niego.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Almas De Barrio - Quédate</span>
+                        <audio controls preload="none">
+                            <source src="./Almas De Barrio - Quédate.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Almas De Barrio - Tan Solo Vamos</span>
+                        <audio controls preload="none">
+                            <source src="./Almas De Barrio - Tan Solo Vamos.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Almas De Barrio - Déjame</span>
+                        <audio controls preload="none">
+                            <source src="./Almas De Barrio - Déjame.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Afaz Natural - Deseo Saber</span>
+                        <audio controls preload="none">
+                            <source src="./Afaz Natural - Deseo Saber.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Pipe Bueno - Dueño de ti</span>
+                        <audio controls preload="none">
+                            <source src="./Pipe Bueno - Dueño de ti.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Jhonny Rivera - Te Doy Mi Vida</span>
+                        <audio controls preload="none">
+                            <source src="./Jhonny Rivera - Te Doy Mi Vida.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Jhonny Rivera - Como Me Gustas</span>
+                        <audio controls preload="none">
+                            <source src="./Jhonny Rivera - Como Me Gustas.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Fernando Burbano - Mi Novia</span>
+                        <audio controls preload="none">
+                            <source src="./Fernando Burbano - Mi Novia.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Christian Daniel - Ahora Que Te Vas</span>
+                        <audio controls preload="none">
+                            <source src="./Christian Daniel - Ahora Que Te Vas.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Sebastián Yatra - Un Año</span>
+                        <audio controls preload="none">
+                            <source src="./Sebastián Yatra - Un Año.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Sebastián Yatra - Quiero Decirte</span>
+                        <audio controls preload="none">
+                            <source src="./Sebastián Yatra - Quiero Decirte.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Nigga - Sin Tu Amor</span>
+                        <audio controls preload="none">
+                            <source src="./Nigga - Sin Tu Amor.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Nigga - Te Amo Tanto</span>
+                        <audio controls preload="none">
+                            <source src="./Nigga - Te Amo Tanto.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Nigga - Te quiero</span>
+                        <audio controls preload="none">
+                            <source src="./Nigga - Te quiero.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Nigga - Luna</span>
+                        <audio controls preload="none">
+                            <source src="./Nigga - Luna.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Nigga - En Este Mundo No Seria Feliz</span>
+                        <audio controls preload="none">
+                            <source src="./Nigga -  En Este Mundo No Seria Feliz.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Galante El Emperador - Un Ratito Mas</span>
+                        <audio controls preload="none">
+                            <source src="./Galante El Emperador - Un Ratito Mas.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Galante El Emperador - Besame</span>
+                        <audio controls preload="none">
+                            <source src="./Galante El Emperador - Besame.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Dread Mar I - Días de sol Nublados</span>
+                        <audio controls preload="none">
+                            <source src="./Dread Mar I - Días de sol Nublados.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+                <div class="reproductor-container">
+                    <div class="reproductor">
+                        <span class="nombre-cancion">🎵 Cali y El Dandee - Yo Te Esperaré</span>
+                        <audio controls preload="none">
+                            <source src="./Cali y El Dandee - Yo Te Esperaré.mp3" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+            </div>
+        </section>
 
         <div class="galeria">
             <div class="tarjeta">
@@ -1971,7 +2479,14 @@
         </footer>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
+        // Variables globales para YouTube API
+        window.ytPlayer = null;
+
+        // Función que llama la API de YouTube al iniciar (requerida por YT)
+        function onYouTubeIframeAPIReady() { }
+
         // --- EFECTO DE VIAJE ESTELAR (WARP SPEED) ---
         const canvas = document.getElementById('canvas-estrellas');
         const ctx = canvas.getContext('2d');
@@ -2130,7 +2645,14 @@
 
                 if (song.nombre.includes(termino) && !encontrado) {
                     encontrado = true;
-                    song.elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                    // Mover la canción buscada a la primera fila
+                    const container = song.elemento.closest('.reproductor-container');
+                    const galeria = document.querySelector('.musica-galeria');
+                    if (container && galeria) {
+                        galeria.prepend(container);
+                        galeria.scrollTop = 0; // Desplazar arriba
+                    }
 
                     setTimeout(() => {
                         song.elemento.classList.add('resaltado');
@@ -2185,8 +2707,13 @@
                         inputBusqueda.value = "";
                         listaSugerencias.style.display = 'none';
 
-                        // Scroll y reproducción
-                        song.elemento.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        // Mover a la primera fila y reproducir
+                        const container = song.elemento.closest('.reproductor-container');
+                        const galeria = document.querySelector('.musica-galeria');
+                        if (container && galeria) {
+                            galeria.prepend(container);
+                            galeria.scrollTop = 0; // Desplazar arriba
+                        }
                         setTimeout(() => {
                             if (song.audio) {
                                 detenerTodo(song.audio);
@@ -2221,6 +2748,16 @@
 
             audio.addEventListener('play', (e) => {
                 detenerTodo(e.target);
+
+                // Pausar video de YouTube usando la API explícitamente
+                if (window.ytPlayer && window.ytPlayer.pauseVideo) {
+                    try {
+                        window.ytPlayer.pauseVideo();
+                    } catch (error) {
+                        console.warn("Error al intentar pausar YouTube:", error);
+                    }
+                }
+
                 iniciarVisualizador(e.target);
                 // Añadir resaltado a la canción que empieza a sonar
                 const parent = e.target.closest('.reproductor');
@@ -2242,6 +2779,20 @@
             });
         });
         // --- LÓGICA DEL REPRODUCTOR DE VIDEO INDEPENDIENTE + YOUTUBE API ---
+
+        function onPlayerStateChange(event) {
+            // Si el estado es 1 (Playing), pausar la música
+            if (window.YT && event.data === window.YT.PlayerState.PLAYING) {
+                const audios = document.querySelectorAll('audio');
+                if (audios) {
+                    audios.forEach(audio => {
+                        if (!audio.paused && typeof audio.pause === 'function') {
+                            audio.pause();
+                        }
+                    });
+                }
+            }
+        }
 
         // --- ESPACIO PARA TU API_KEY DE GOOGLE CLOUD ---
         const YOUTUBE_API_KEY = 'AIzaSyAzUyefuc-8LQPoDbybCMprcPLhLzb1dHY';
@@ -2277,7 +2828,7 @@
                     if (url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
                     else if (url.includes("youtu.be/")) videoId = url.split("youtu.be/")[1].split("?")[0];
                     else if (url.includes("embed/")) videoId = url.split("embed/")[1].split("?")[0];
-                    if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0`;
+                    if (videoId) embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&enablejsapi=1`;
                 }
                 // Lógica para Vimeo
                 else if (url.includes("vimeo.com")) {
@@ -2346,7 +2897,7 @@
                 const card = document.createElement('div');
                 card.className = 'yt-card';
                 card.onclick = () => {
-                    reproducirVideoIframe(`https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`);
+                    reproducirVideoIframe(`https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1&enablejsapi=1`);
                     // Subir al reproductor cuando se elige un video
                     window.scrollTo({
                         top: document.querySelector('.video-independiente-section').offsetTop - 30,
@@ -2383,6 +2934,24 @@
             iframe.src = embedUrl;
             iframe.style.display = 'block';
             placeholder.style.display = 'none';
+
+            // Instanciar YT.Player para detectar eventos del video
+            if (embedUrl.includes('youtube.com') || embedUrl.includes('youtu.be')) {
+                setTimeout(() => {
+                    if (window.YT && window.YT.Player) {
+                        try {
+                            if (window.ytPlayer && typeof window.ytPlayer.destroy === 'function') {
+                                window.ytPlayer.destroy();
+                            }
+                            window.ytPlayer = new window.YT.Player('iframe-video-independiente', {
+                                events: {
+                                    'onStateChange': onPlayerStateChange
+                                }
+                            });
+                        } catch (error) { console.warn("Fallo al crear YT.Player:", error); }
+                    }
+                }, 500); // Retraso para asegurar que el iframe aplicó el src
+            }
         }
 
         function mostrarErrorVideo() {
