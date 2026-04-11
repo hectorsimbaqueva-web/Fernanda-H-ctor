@@ -766,6 +766,108 @@
             }
         }
 
+        /* --- ESTILOS PANTALLA REPRODUCTOR PRINCIPAL --- */
+        .pantalla-reproductor-principal {
+            background: rgba(20, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--kitty-pink-bold);
+            border-radius: 25px;
+            padding: 30px;
+            margin: 0 auto 40px;
+            max-width: 600px;
+            width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 15px 40px rgba(255, 26, 117, 0.4), inset 0 0 20px rgba(0, 200, 255, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+
+        .info-cancion-actual {
+            margin-bottom: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #texto-cancion-actual {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--acento-neon-azul);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 15px var(--acento-neon-azul);
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            animation: pulsoTexto 2s infinite alternate;
+        }
+
+        @keyframes pulsoTexto {
+            0% {
+                text-shadow: 0 0 10px var(--acento-neon-azul);
+            }
+
+            100% {
+                text-shadow: 0 0 20px var(--acento-neon-azul), 0 0 30px var(--acento-neon-azul);
+            }
+        }
+
+        .visualizador-principal {
+            width: 100%;
+            height: 100px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .controles-principales {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .btn-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--kitty-pink);
+            color: white;
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 77, 148, 0.3);
+        }
+
+        .btn-control:hover {
+            transform: scale(1.1);
+            background: rgba(255, 77, 148, 0.8);
+            box-shadow: 0 0 20px var(--kitty-pink);
+        }
+
+        .btn-control.play-btn {
+            width: 65px;
+            height: 65px;
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--kitty-pink), var(--kitty-pink-bold));
+            border: 2px solid white;
+        }
+
+        .btn-control.play-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 0 30px var(--acento-neon-azul);
+            border-color: var(--acento-neon-azul);
+        }
+
         /* --- SUGERENCIAS DE BÚSQUEDA --- */
         .sugerencias-container {
             position: absolute;
@@ -1248,6 +1350,22 @@
                     placeholder="¿Qué canción quiere escuchar mi princesa?" autocomplete="off">
                 <button id="btn-buscar" class="buscador-btn">🔍 Buscar</button>
                 <div id="lista-sugerencias" class="sugerencias-container"></div>
+            </div>
+
+            <!-- PANTALLA REPRODUCTOR PRINCIPAL -->
+            <div id="pantalla-reproductor-principal" class="pantalla-reproductor-principal">
+                <div class="info-cancion-actual">
+                    <span id="texto-cancion-actual">🎵 SELECCIONA UNA CANCIÓN</span>
+                </div>
+                <!-- Visualizador Principal -->
+                <canvas id="visualizador-principal" class="visualizador-principal"></canvas>
+                <!-- Controles Principales -->
+                <div class="controles-principales">
+                    <button id="btn-prev" class="btn-control" title="Anterior" onclick="cambiarCancion(-1)">⏮</button>
+                    <button id="btn-play-pause" class="btn-control play-btn" title="Reproducir/Pausar"
+                        onclick="togglePlayPausePrincipal()">▶️</button>
+                    <button id="btn-next" class="btn-control" title="Siguiente" onclick="cambiarCancion(1)">⏭</button>
+                </div>
             </div>
 
             <div class="musica-galeria">
@@ -2624,23 +2742,33 @@
 
             const reproductor = audio.closest('.reproductor');
             const canvasV = reproductor?.querySelector('.visualizador-audio');
-            if (!canvasV) return;
+            const canvasPrincipal = document.getElementById('visualizador-principal');
+
+            if (!canvasV && !canvasPrincipal) return;
 
             if (loopsAnimacion.get(audio)) {
                 cancelAnimationFrame(loopsAnimacion.get(audio));
             }
 
-            const ctxV = canvasV.getContext('2d', { alpha: true });
+            const ctxV = canvasV ? canvasV.getContext('2d', { alpha: true }) : null;
+            const ctxP = canvasPrincipal ? canvasPrincipal.getContext('2d', { alpha: true }) : null;
             const bufferLength = analizer ? analizer.frequencyBinCount : 32;
             const dataArray = new Uint8Array(bufferLength);
 
-            // Cache de dimensiones para no recalcular en cada frame
-            let width = canvasV.width = canvasV.clientWidth;
-            let height = canvasV.height = canvasV.clientHeight;
+            let widthV, heightV, widthP, heightP;
+            if (canvasV) {
+                widthV = canvasV.width = canvasV.clientWidth;
+                heightV = canvasV.height = canvasV.clientHeight;
+            }
+            if (canvasPrincipal) {
+                widthP = canvasPrincipal.width = canvasPrincipal.clientWidth;
+                heightP = canvasPrincipal.height = canvasPrincipal.clientHeight;
+            }
 
             function animar() {
                 if (audio.paused || audio.ended) {
-                    ctxV.clearRect(0, 0, width, height);
+                    if (ctxV) ctxV.clearRect(0, 0, widthV, heightV);
+                    if (ctxP) ctxP.clearRect(0, 0, widthP, heightP);
                     loopsAnimacion.set(audio, null);
                     return;
                 }
@@ -2648,24 +2776,43 @@
                 loopsAnimacion.set(audio, requestAnimationFrame(animar));
                 if (analizer) analizer.getByteFrequencyData(dataArray);
 
-                ctxV.clearRect(0, 0, width, height);
-                ctxV.shadowBlur = 12;
-                ctxV.shadowColor = '#00c8ff';
+                if (ctxV) {
+                    ctxV.clearRect(0, 0, widthV, heightV);
+                    ctxV.shadowBlur = 12;
+                    ctxV.shadowColor = '#00c8ff';
+                }
 
-                const barWidth = (width / bufferLength) * 2;
-                let x = 0;
+                if (ctxP) {
+                    ctxP.clearRect(0, 0, widthP, heightP);
+                    ctxP.shadowBlur = 15;
+                    ctxP.shadowColor = '#00c8ff';
+                }
+
+                const barWidthV = widthV ? ((widthV / bufferLength) * 2) : 0;
+                const barWidthP = widthP ? ((widthP / bufferLength) * 2) : 0;
+                let xV = 0, xP = 0;
 
                 for (let i = 0; i < bufferLength; i++) {
                     const val = analizer ? dataArray[i] : (Math.sin(Date.now() / 200 + i * 0.4) + 1) * 80;
-                    const barHeight = (val / 255) * height;
 
-                    const gradient = ctxV.createLinearGradient(0, height, 0, height - barHeight);
-                    gradient.addColorStop(0, 'rgba(0, 200, 255, 0.1)');
-                    gradient.addColorStop(1, '#00c8ff');
-
-                    ctxV.fillStyle = gradient;
-                    ctxV.fillRect(x, height - Math.max(barHeight, 3), barWidth - 4, Math.max(barHeight, 3));
-                    x += barWidth;
+                    if (ctxV) {
+                        const barHeightV = (val / 255) * heightV;
+                        const gradientV = ctxV.createLinearGradient(0, heightV, 0, heightV - barHeightV);
+                        gradientV.addColorStop(0, 'rgba(0, 200, 255, 0.1)');
+                        gradientV.addColorStop(1, '#00c8ff');
+                        ctxV.fillStyle = gradientV;
+                        ctxV.fillRect(xV, heightV - Math.max(barHeightV, 3), barWidthV - 4, Math.max(barHeightV, 3));
+                        xV += barWidthV;
+                    }
+                    if (ctxP) {
+                        const barHeightP = (val / 255) * heightP;
+                        const gradientP = ctxP.createLinearGradient(0, heightP, 0, heightP - barHeightP);
+                        gradientP.addColorStop(0, 'rgba(0, 200, 255, 0.3)');
+                        gradientP.addColorStop(1, '#00c8ff');
+                        ctxP.fillStyle = gradientP;
+                        ctxP.fillRect(xP, heightP - Math.max(barHeightP, 3), barWidthP - 4, Math.max(barHeightP, 3));
+                        xP += barWidthP;
+                    }
                 }
             }
             animar();
@@ -2789,6 +2936,49 @@
             }
         });
 
+        // --- LÓGICA DE REPRODUCTOR PRINCIPAL ---
+        let cancionActualIndex = -1;
+        let audioActualPrincipal = null;
+        const textoCancionActual = document.getElementById('texto-cancion-actual');
+        const btnPlayPause = document.getElementById('btn-play-pause');
+
+        function reproducirCancionIndex(index) {
+            const audiosList = document.querySelectorAll('audio');
+            if (index < 0 || index >= audiosList.length) return;
+            cancionActualIndex = index;
+            const audio = audiosList[index];
+            detenerTodo(audio);
+            audio.play().catch(e => console.log("Bloqueado por autoplay:", e));
+        }
+
+        function cambiarCancion(dir) {
+            const audiosList = document.querySelectorAll('audio');
+            if (cancionActualIndex === -1 && audiosList.length > 0) {
+                reproducirCancionIndex(0);
+                return;
+            }
+            let newIndex = cancionActualIndex + dir;
+            if (newIndex >= audiosList.length) newIndex = 0;
+            if (newIndex < 0) newIndex = audiosList.length - 1;
+            reproducirCancionIndex(newIndex);
+        }
+
+        function togglePlayPausePrincipal() {
+            const audiosList = document.querySelectorAll('audio');
+            if (cancionActualIndex === -1 && audiosList.length > 0) {
+                reproducirCancionIndex(0);
+                return;
+            }
+            if (audioActualPrincipal) {
+                if (audioActualPrincipal.paused) {
+                    detenerTodo(audioActualPrincipal);
+                    audioActualPrincipal.play().catch(e => console.log(e));
+                } else {
+                    audioActualPrincipal.pause();
+                }
+            }
+        }
+
         // Inyectar canvas y configurar eventos una sola vez
         const audiosList = document.querySelectorAll('audio');
         audiosList.forEach((audio, index) => {
@@ -2801,6 +2991,17 @@
 
             audio.addEventListener('play', (e) => {
                 detenerTodo(e.target);
+
+                // Actualizar estado reproductor principal
+                cancionActualIndex = Array.from(audiosList).indexOf(e.target);
+                audioActualPrincipal = e.target;
+
+                const rep = e.target.closest('.reproductor');
+                const nomCancion = rep?.querySelector('.nombre-cancion');
+                if (textoCancionActual && nomCancion) {
+                    textoCancionActual.textContent = nomCancion.textContent.toUpperCase();
+                }
+                if (btnPlayPause) btnPlayPause.textContent = "⏸";
 
                 // Pausar video de YouTube usando la API explícitamente
                 if (window.ytPlayer && window.ytPlayer.pauseVideo) {
@@ -2818,17 +3019,16 @@
             });
 
             audio.addEventListener('pause', (e) => {
+                if (audioActualPrincipal === e.target && btnPlayPause) {
+                    btnPlayPause.textContent = "▶️";
+                }
                 // Quitar resaltado al pausar
                 const parent = e.target.closest('.reproductor');
                 if (parent) parent.classList.remove('resaltado');
             });
 
             audio.addEventListener('ended', () => {
-                const nextAudio = audiosList[index + 1];
-                if (nextAudio) {
-                    nextAudio.play();
-                    nextAudio.closest('.reproductor').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
+                cambiarCancion(1);
             });
         });
         // --- LÓGICA DEL REPRODUCTOR DE VIDEO INDEPENDIENTE + YOUTUBE API ---
