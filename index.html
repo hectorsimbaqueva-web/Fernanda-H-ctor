@@ -2862,6 +2862,10 @@
                 return;
             }
 
+            // Limpiar el campo de texto después de buscar
+            input.value = "";
+            input.blur();
+
             // Detectar si es un enlace o una búsqueda por palabra clave
             const esEnlace = /^(http|https|www\.)|(\.com|\.be|\.net)/.test(url.toLowerCase());
 
