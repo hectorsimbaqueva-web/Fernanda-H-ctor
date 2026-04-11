@@ -113,43 +113,10 @@
             overflow: visible;
         }
 
-        .reproductor::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            right: -10px;
-            width: 70px;
-            height: 70px;
-            background-image: url('hello_kitty_mini.png');
-            background-size: 85%;
-            background-position: center;
-            background-repeat: no-repeat;
-            z-index: 10;
-            background-color: white;
-            border-radius: 50%;
-            border: 3px solid var(--acento-neon-azul);
-            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
-            transition: transform 0.3s ease;
-            pointer-events: none;
-        }
-
-        @media (max-width: 600px) {
-            .reproductor::after {
-                right: 0px;
-                bottom: -5px;
-                width: 50px;
-                height: 50px;
-            }
-        }
-
         .reproductor:hover {
             transform: translateY(-8px);
             border-color: var(--acento-neon-azul);
             box-shadow: 0 15px 40px rgba(0, 200, 255, 0.3);
-        }
-
-        .reproductor:hover::after {
-            transform: scale(1.1) rotate(5deg);
         }
 
         .visualizador-audio {
@@ -868,9 +835,87 @@
             border: 2px solid var(--kitty-pink);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 77, 148, 0.2);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
+            /* Asegura que las kitties puedan sobresalir en las esquinas */
             z-index: 5;
             transition: all 0.4s ease;
+        }
+
+        /* --- HELLO KITTY EN LAS 4 ESQUINAS DEL CONTENEDOR --- */
+        .esquina-kitty {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background-image: url('hello_kitty_mini.png');
+            background-size: 85%;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 20;
+            background-color: white;
+            border-radius: 50%;
+            border: 3px solid var(--kitty-pink);
+            filter: drop-shadow(0 0 10px var(--kitty-pink));
+            pointer-events: none;
+            animation: flotarKitty 4s ease-in-out infinite;
+        }
+
+        .esquina-top-left {
+            top: -25px;
+            left: -25px;
+        }
+
+        .esquina-top-right {
+            top: -25px;
+            right: -25px;
+        }
+
+        .esquina-bottom-left {
+            bottom: -25px;
+            left: -25px;
+        }
+
+        .esquina-bottom-right {
+            bottom: -25px;
+            right: -25px;
+        }
+
+        @media (max-width: 600px) {
+            .esquina-kitty {
+                width: 50px;
+                height: 50px;
+            }
+
+            .esquina-top-left {
+                top: -15px;
+                left: -15px;
+            }
+
+            .esquina-top-right {
+                top: -15px;
+                right: -15px;
+            }
+
+            .esquina-bottom-left {
+                bottom: -15px;
+                left: -15px;
+            }
+
+            .esquina-bottom-right {
+                bottom: -15px;
+                right: -15px;
+            }
+        }
+
+        @keyframes flotarKitty {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+
+            50% {
+                transform: translateY(-8px) rotate(5deg);
+            }
         }
 
         .video-independiente-section:hover {
@@ -1164,6 +1209,10 @@
 
         <!-- SECCIÓN: REPRODUCTOR DE VIDEO INDEPENDIENTE -->
         <section class="video-independiente-section">
+            <div class="esquina-kitty esquina-top-left"></div>
+            <div class="esquina-kitty esquina-top-right"></div>
+            <div class="esquina-kitty esquina-bottom-left"></div>
+            <div class="esquina-kitty esquina-bottom-right"></div>
             <h2 class="video-independiente-titulo">🎥 Reproductor de Video</h2>
             <div class="video-input-wrapper">
                 <input type="text" id="input-video-url" class="video-input"
@@ -1188,6 +1237,10 @@
 
         <!-- SECCIÓN: REPRODUCTOR DE MÚSICA -->
         <section class="video-independiente-section" style="max-width: 1200px;">
+            <div class="esquina-kitty esquina-top-left"></div>
+            <div class="esquina-kitty esquina-top-right"></div>
+            <div class="esquina-kitty esquina-bottom-left"></div>
+            <div class="esquina-kitty esquina-bottom-right"></div>
             <h2 class="video-independiente-titulo">🎧 Reproductor de Música</h2>
 
             <div class="buscador-container" style="margin: 0 auto 40px;">
